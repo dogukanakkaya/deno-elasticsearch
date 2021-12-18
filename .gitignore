@@ -1,0 +1,8 @@
+# IDE & Editor
+.vscode
+.idea
+#/ IDE & Editor
+
+# Local Development
+app.ts
+#/ Local Development
