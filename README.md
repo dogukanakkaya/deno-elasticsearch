@@ -6,7 +6,7 @@
 
 <br>
 
-## Getting Started
+# Getting Started
 
 ### Connect and Check the Health of Elasticsearch
 ```ts
