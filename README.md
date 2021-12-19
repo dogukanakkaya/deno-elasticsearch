@@ -1,5 +1,10 @@
-# deno-elasticsearch
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/51231605/146690618-716a20dd-c3cd-4b30-a106-03108eb20cb0.png"/>
 
+  <h3 align="center">Elasticsearch Client for Deno Runtime</p>
+</p>
+
+<br>
 
 ## Connect and Check the Health of Elasticsearch
 ```ts
@@ -72,10 +77,10 @@ const settings: IndicesSettingsFindResponse = await client.indices.settings('tes
 
 ```ts
 import type {
-    CreateDocumentBody
+    CreateDocumentResponse
 } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
 
-const createDocument = await client.documents.create('test-index', {
+const createDocument: CreateDocumentResponse = await client.documents.create('test-index', {
     id: 1,
     title: 'test'
 })
