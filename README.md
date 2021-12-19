@@ -6,7 +6,9 @@
 
 <br>
 
-## Connect and Check the Health of Elasticsearch
+## Getting Started
+
+### Connect and Check the Health of Elasticsearch
 ```ts
 import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
 import type { HealthResponse } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
@@ -18,7 +20,7 @@ const health: HealthResponse = await client.health()
 
 <br>
 
-## Search
+### Search
 
 ```ts
 interface Source {
@@ -36,7 +38,7 @@ const res = await client.search<Source>('airport_codes', {
 
 <br>
 
-## Indice Methods
+### Indice Methods
 
 ```ts
 import type {
@@ -73,7 +75,7 @@ const settings: IndicesSettingsFindResponse = await client.indices.settings('tes
 
 <br>
 
-## Document Methods
+### Document Methods
 
 ```ts
 import type {
@@ -88,7 +90,7 @@ const createDocument: CreateDocumentResponse = await client.documents.create('te
 
 <br>
 
-## Error Handling
+### Error Handling
 
 ```ts
 try {
