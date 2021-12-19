@@ -1,14 +1,15 @@
-import {
-    ICatIndice,
-    IIndice,
-    IIndiceBody,
-    IFindIndiceQueryString,
-    ICreateIndiceQueryString,
-    IDeleteIndiceQueryString,
-    IExistsIndiceQueryString,
-    IStatusIndiceQueryString
-} from './types.ts'
 import { send, toQueryString } from './helpers/request.ts'
+
+import type {
+    CatIndice,
+    Indice,
+    IndiceBody,
+    FindIndiceQueryString,
+    CreateIndiceQueryString,
+    DeleteIndiceQueryString,
+    ExistsIndiceQueryString,
+    StatusIndiceQueryString
+} from './types/index.ts'
 
 export default class Indices {
     #host: string
@@ -17,21 +18,21 @@ export default class Indices {
         this.#host = host
     }
 
-    findAll(): Promise<ICatIndice[]> {
+    findAll(): Promise<CatIndice[]> {
         return send(`${this.#host}/_cat/indices?format=json&pretty=1`)
     }
 
     find(
         index: string,
-        queryParams: IFindIndiceQueryString = { allow_no_indices: true, expand_wildcards: 'open', flat_settings: false, include_defaults: false, ignore_unavailable: false, local: false }
-    ): Promise<IIndice> {
+        queryParams: FindIndiceQueryString = { allow_no_indices: true, expand_wildcards: 'open', flat_settings: false, include_defaults: false, ignore_unavailable: false, local: false }
+    ): Promise<Indice> {
         return send(`${this.#host}/${index}?${toQueryString(queryParams)}`)
     }
 
     create(
         index: string,
-        body: IIndiceBody = {},
-        queryParams: ICreateIndiceQueryString = { wait_for_active_shards: 1, master_timeout: '30s', timeout: '30s' }
+        body: IndiceBody = {},
+        queryParams: CreateIndiceQueryString = { wait_for_active_shards: 1, master_timeout: '30s', timeout: '30s' }
     ) {
         return send(`${this.#host}/${index}?${toQueryString(queryParams)}`, {
             method: 'PUT',
@@ -41,7 +42,7 @@ export default class Indices {
 
     destroy(
         index: string,
-        queryParams: IDeleteIndiceQueryString = { expand_wildcards: 'open,closed', ignore_unavailable: false, master_timeout: '30s', timeout: '30s' }
+        queryParams: DeleteIndiceQueryString = { expand_wildcards: 'open,closed', ignore_unavailable: false, master_timeout: '30s', timeout: '30s' }
     ) {
         return send(`${this.#host}/${index}?${toQueryString(queryParams)}`, {
             method: 'DELETE'
@@ -50,7 +51,7 @@ export default class Indices {
 
     exists(
         index: string,
-        queryParams: IExistsIndiceQueryString = { allow_no_indices: true, expand_wildcards: 'open', flat_settings: false, include_defaults: false, ignore_unavailable: false, local: false }
+        queryParams: ExistsIndiceQueryString = { allow_no_indices: true, expand_wildcards: 'open', flat_settings: false, include_defaults: false, ignore_unavailable: false, local: false }
     ): Promise<boolean> {
         return send(`${this.#host}/${index}?${toQueryString(queryParams)}`, {
             method: 'HEAD'
@@ -59,8 +60,8 @@ export default class Indices {
 
     close(
         index: string,
-        queryParams: IStatusIndiceQueryString = { allow_no_indices: true, expand_wildcards: 'open', ignore_unavailable: false, master_timeout: '30s', timeout: '30s' }
-    ): Promise<boolean> {
+        queryParams: StatusIndiceQueryString = { allow_no_indices: true, expand_wildcards: 'open', ignore_unavailable: false, master_timeout: '30s', timeout: '30s' }
+    ) {
         return send(`${this.#host}/${index}/_close?${toQueryString(queryParams)}`, {
             method: 'POST'
         })
@@ -68,8 +69,8 @@ export default class Indices {
 
     open(
         index: string,
-        queryParams: IStatusIndiceQueryString = { allow_no_indices: true, expand_wildcards: 'closed', ignore_unavailable: false, master_timeout: '30s', timeout: '30s' }
-    ): Promise<boolean> {
+        queryParams: StatusIndiceQueryString = { allow_no_indices: true, expand_wildcards: 'closed', ignore_unavailable: false, master_timeout: '30s', timeout: '30s' }
+    ) {
         return send(`${this.#host}/${index}/_open?${toQueryString(queryParams)}`, {
             method: 'POST'
         })
