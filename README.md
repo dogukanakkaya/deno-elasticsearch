@@ -23,14 +23,18 @@ const health: HealthResponse = await client.health()
 ### Search
 
 ```ts
+import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
+
 interface Source {
     id: number
+    title: string
+    description: string
 }
 
-const res = await client.search<Source>('airport_codes', {
+const res: SearchResponse<Source> = await client.search<Source>('airport_codes', {
     query: {
         match: {
-            'AirportCode': 'SAW'
+            title: 'Deno'
         }
     }
 })
@@ -38,7 +42,7 @@ const res = await client.search<Source>('airport_codes', {
 
 <br>
 
-### Indice Methods
+### Indices
 
 ```ts
 import type {
@@ -75,7 +79,7 @@ const settings: IndicesSettingsFindResponse = await client.indices.settings('tes
 
 <br>
 
-### Document Methods
+### Documents
 
 ```ts
 import type {
