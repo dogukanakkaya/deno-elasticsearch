@@ -1,78 +1,69 @@
 import { send, toQueryString } from './helpers/request.ts'
 
 import type {
-    CatIndice,
-    Indice,
-    IndiceBody,
-    FindIndiceQueryString,
-    CreateIndiceQueryString,
-    DeleteIndiceQueryString,
-    ExistsIndiceQueryString,
-    StatusIndiceQueryString
+    CatIndicesRequest,
+    CatIndicesResponse,
+    IndicesFindResponse,
+    IndicesFindRequest,
+    IndicesCreateBody,
+    IndicesCreateRequest,
+    IndicesCreateResponse,
+    IndicesDeleteRequest,
+    IndicesDeleteResponse,
+    IndicesExistsRequest,
+    IndicesStatusRequest,
+    IndicesStatusResponse,
+    IndicesSettingsFindRequest,
+    IndicesSettingsFindResponse
 } from './types/index.ts'
 
 export default class Indices {
-    #host: string
+    #node: string
 
-    constructor(host: string) {
-        this.#host = host
+    constructor({ node }: { node: string }) {
+        this.#node = node
     }
 
-    findAll(): Promise<CatIndice[]> {
-        return send(`${this.#host}/_cat/indices?format=json&pretty=1`)
+    findAll(target = '*', queryParams: CatIndicesRequest = {}): Promise<CatIndicesResponse> {
+        return send(`${this.#node}/_cat/indices/${target}?format=json&pretty=1&${toQueryString(queryParams)}`)
     }
 
-    find(
-        index: string,
-        queryParams: FindIndiceQueryString = { allow_no_indices: true, expand_wildcards: 'open', flat_settings: false, include_defaults: false, ignore_unavailable: false, local: false }
-    ): Promise<Indice> {
-        return send(`${this.#host}/${index}?${toQueryString(queryParams)}`)
+    find(target: string, queryParams: IndicesFindRequest = {}): Promise<IndicesFindResponse> {
+        return send(`${this.#node}/${target}?${toQueryString(queryParams)}`)
     }
 
-    create(
-        index: string,
-        body: IndiceBody = {},
-        queryParams: CreateIndiceQueryString = { wait_for_active_shards: 1, master_timeout: '30s', timeout: '30s' }
-    ) {
-        return send(`${this.#host}/${index}?${toQueryString(queryParams)}`, {
+    create(target: string, body: IndicesCreateBody = {}, queryParams: IndicesCreateRequest = {}): Promise<IndicesCreateResponse> {
+        return send(`${this.#node}/${target}?${toQueryString(queryParams)}`, {
             method: 'PUT',
             body: JSON.stringify(body)
         })
     }
 
-    destroy(
-        index: string,
-        queryParams: DeleteIndiceQueryString = { expand_wildcards: 'open,closed', ignore_unavailable: false, master_timeout: '30s', timeout: '30s' }
-    ) {
-        return send(`${this.#host}/${index}?${toQueryString(queryParams)}`, {
+    destroy(target: string, queryParams: IndicesDeleteRequest = {}): Promise<IndicesDeleteResponse> {
+        return send(`${this.#node}/${target}?${toQueryString(queryParams)}`, {
             method: 'DELETE'
         })
     }
 
-    exists(
-        index: string,
-        queryParams: ExistsIndiceQueryString = { allow_no_indices: true, expand_wildcards: 'open', flat_settings: false, include_defaults: false, ignore_unavailable: false, local: false }
-    ): Promise<boolean> {
-        return send(`${this.#host}/${index}?${toQueryString(queryParams)}`, {
+    exists(target: string, queryParams: IndicesExistsRequest = {}): Promise<boolean> {
+        return send(`${this.#node}/${target}?${toQueryString(queryParams)}`, {
             method: 'HEAD'
         }).then(() => true).catch(() => false)
     }
 
-    close(
-        index: string,
-        queryParams: StatusIndiceQueryString = { allow_no_indices: true, expand_wildcards: 'open', ignore_unavailable: false, master_timeout: '30s', timeout: '30s' }
-    ) {
-        return send(`${this.#host}/${index}/_close?${toQueryString(queryParams)}`, {
+    close(target: string, queryParams: IndicesStatusRequest = {}): Promise<IndicesStatusResponse> {
+        return send(`${this.#node}/${target}/_close?${toQueryString(queryParams)}`, {
             method: 'POST'
         })
     }
 
-    open(
-        index: string,
-        queryParams: StatusIndiceQueryString = { allow_no_indices: true, expand_wildcards: 'closed', ignore_unavailable: false, master_timeout: '30s', timeout: '30s' }
-    ) {
-        return send(`${this.#host}/${index}/_open?${toQueryString(queryParams)}`, {
+    open(target: string, queryParams: IndicesStatusRequest = {}): Promise<IndicesStatusResponse> {
+        return send(`${this.#node}/${target}/_open?${toQueryString(queryParams)}`, {
             method: 'POST'
         })
+    }
+
+    settings(target: string, setting = '', queryParams: IndicesSettingsFindRequest = {}): Promise<IndicesSettingsFindResponse> {
+        return send(`${this.#node}/${target}/_settings/${setting}?${toQueryString(queryParams)}`)
     }
 }

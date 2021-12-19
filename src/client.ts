@@ -1,22 +1,25 @@
 import Indices from './indices.ts'
-import { send } from './helpers/request.ts'
+import Documents from './documents.ts'
+import { send, toQueryString } from './helpers/request.ts'
 
-import { SearchBody, SearchResponse, HealthResponse } from './types/index.ts'
+import { SearchResponse, HealthResponse } from './types/index.ts'
 
 export default class Client {
-    #host: string
-    indices: Indices;
+    #node: string
+    indices: Indices
+    documents: Documents
 
-    constructor(host: string) {
-        this.#host = host
-        this.indices = new Indices(this.#host)
+    constructor({ node }: { node: string }) {
+        this.#node = node
+        this.indices = new Indices({ node: this.#node })
+        this.documents = new Documents({ node: this.#node })
     }
 
     health(): Promise<HealthResponse> {
-        return send(`${this.#host}/_cluster/health`)
+        return send(`${this.#node}/_cluster/health`)
     }
 
-    search(index: string, body: SearchBody): Promise<SearchResponse> {
-        return send(`${this.#host}/${index}/_search?source_content_type=application/json&source=${JSON.stringify(body)}`)
+    search<T>(index: string, body: unknown, queryParams: any = {}): Promise<SearchResponse<T>> {
+        return send(`${this.#node}/${index}/_search?source_content_type=application/json&source=${JSON.stringify(body)}&${toQueryString(queryParams)}`)
     }
 }

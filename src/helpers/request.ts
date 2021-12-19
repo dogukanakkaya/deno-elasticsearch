@@ -1,5 +1,5 @@
-export const send = <T>(url: string, body?: RequestInit): Promise<T> => {
-    return fetch(url, body).then(async (res) => {
+export const send = <T>(url: string, init?: RequestInit): Promise<T> => {
+    return fetch(url, init).then(async (res) => {
         if (res.status >= 200 && res.status < 300) {
             return res.json()
         }

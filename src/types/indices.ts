@@ -1,17 +1,31 @@
-import { Health } from './client.ts'
+import type {
+    Health,
+    Timeout,
+    Index,
+    CommonCatQueryParameters,
+    Bytes,
+    WaitForActiveShards
+} from './index.ts'
 
-export enum IndiceStatus {
-    All = 'all',
-    Open = 'open',
-    Closed = 'closed',
-    Hidden = 'hidden',
-    None = 'none'
+export interface IndiceIndexState {
+    mappings?: unknown
+    settings?: Record<string, any>
+    aliases?: Record<Index, IndiceAlias>
+    data_stream?: string
 }
 
-/** Indices */
+export interface IndiceAlias {
+    filter?: unknown
+    index_routing?: string
+    is_hidden?: boolean
+    is_write_index?: boolean
+    routing?: string
+    search_routing?: string
+}
+
 export interface CatIndice {
     health: Health
-    status: IndiceStatus
+    status: string
     index: string
     uuid: string
     pri: number
@@ -22,31 +36,59 @@ export interface CatIndice {
     'pri.store.size'?: string
 }
 
-export interface Indice {
-    [key: string]: Required<IndiceBody>
+export type CatIndicesResponse = CatIndice[]
+
+export interface CatIndicesRequest extends CommonCatQueryParameters {
+    bytes?: Bytes
+    expand_wildcards?: string
+    health?: Health
+    include_unloaded_segments?: boolean
+    pri?: boolean
 }
 
-export interface IndiceBody {
+export interface IndicesFindRequest {
+    allow_no_indices?: boolean
+    expand_wildcards?: string
+    ignore_unavailable?: boolean
+    flat_settings?: boolean
+    include_defaults?: boolean
+    local?: boolean
+}
+
+export interface IndicesFindResponse {
+    [key: Index]: IndiceIndexState
+}
+
+export interface IndicesCreateBody {
     mappings?: unknown
-    settings?: unknown
-    aliases?: unknown
+    settings?: Record<string, any>
+    aliases?: Record<Index, IndiceAlias>
 }
 
-interface IndiceTimeouts {
-    master_timeout?: string
-    timeout?: string
+export interface IndicesCreateRequest {
+    wait_for_active_shards?: WaitForActiveShards
+    master_timeout?: Timeout
+    timeout?: Timeout
 }
 
-export interface CreateIndiceQueryString extends IndiceTimeouts {
-    wait_for_active_shards?: number
+export interface IndicesCreateResponse {
+    index: Index
+    shards_acknowledged: boolean
+    acknowledged?: boolean
 }
 
-export interface DeleteIndiceQueryString extends IndiceTimeouts {
+export interface IndicesDeleteRequest {
     expand_wildcards?: string
     ignore_unavailable?: boolean
+    master_timeout?: Timeout
+    timeout?: Timeout
 }
 
-export interface FindIndiceQueryString {
+export interface IndicesDeleteResponse {
+    acknowledged: boolean
+}
+
+export interface IndicesExistsRequest {
     allow_no_indices?: boolean
     expand_wildcards?: string
     ignore_unavailable?: boolean
@@ -55,17 +97,29 @@ export interface FindIndiceQueryString {
     local?: boolean
 }
 
-export interface ExistsIndiceQueryString {
+export interface IndicesStatusRequest {
     allow_no_indices?: boolean
     expand_wildcards?: string
     ignore_unavailable?: boolean
-    flat_settings?: boolean
-    include_defaults?: boolean
-    local?: boolean
+    wait_for_active_shards?: WaitForActiveShards
+    master_timeout?: Timeout
+    timeout?: Timeout
 }
 
-export interface StatusIndiceQueryString extends IndiceTimeouts {
+export interface IndicesStatusResponse {
+    acknowledged: boolean
+}
+
+export interface IndicesSettingsFindRequest {
     allow_no_indices?: boolean
     expand_wildcards?: string
+    flat_settings?: boolean
+    include_defaults?: boolean
     ignore_unavailable?: boolean
+    local?: boolean
+    master_timeout?: Timeout
+}
+
+export interface IndicesSettingsFindResponse {
+    [key: Index]: IndiceIndexState
 }
