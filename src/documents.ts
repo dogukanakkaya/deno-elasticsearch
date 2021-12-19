@@ -9,9 +9,9 @@ export default class Documents {
         this.#node = node
     }
 
-    create(target: string, body: unknown, queryParams: CreateDocumentRequest = {}): Promise<CreateDocumentResponse> {
-        return send(`${this.#node}/${target}/_doc?${toQueryString(queryParams)}`, {
-            method: 'POST',
+    create(target: string, _id: string, body: unknown, queryParams: CreateDocumentRequest = {}): Promise<CreateDocumentResponse> {
+        return send(`${this.#node}/${target}/_create/${_id}?${toQueryString(queryParams)}`, {
+            method: 'PUT',
             body: JSON.stringify(body)
         })
     }
