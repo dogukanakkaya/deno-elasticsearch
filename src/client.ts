@@ -19,6 +19,7 @@ export default class Client {
         return send(`${this.#node}/_cluster/health`)
     }
 
+    // TODO: queryParams type
     search<T>(index: string, body: unknown, queryParams: any = {}): Promise<SearchResponse<T>> {
         return send(`${this.#node}/${index}/_search?source_content_type=application/json&source=${JSON.stringify(body)}&${toQueryString(queryParams)}`)
     }
