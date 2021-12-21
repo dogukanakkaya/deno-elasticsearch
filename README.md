@@ -64,7 +64,7 @@ const createIndiceBody: IndicesCreateBody = {}
 const createIndice: IndicesCreateResponse = await client.indices.create('test-index', createIndiceBody)
 
 // delete indice
-const deleteIndice: IndicesDeleteResponse = await client.indices.destroy('test-index')
+const deleteIndice: IndicesDeleteResponse = await client.indices.delete('test-index')
 
 // check if indice exists
 const indiceExists: boolean = await client.indices.exists('test-index')

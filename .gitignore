@@ -5,4 +5,5 @@
 
 # Local Development
 app.ts
+.env
 #/ Local Development
