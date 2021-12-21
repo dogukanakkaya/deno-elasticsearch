@@ -77,15 +77,15 @@ const indices = await client.indices.findAll()
 const indice = await client.indices.find('test-index')
 
 const createIndiceBody: IndicesCreateBody = {}
-const createIndice = await client.indices.create('test-index', createIndiceBody)
+await client.indices.create('test-index', createIndiceBody)
 
-const deleteIndice = await client.indices.delete('test-index')
+await client.indices.delete('test-index')
 
-const indiceExists = await client.indices.exists('test-index')
+const exists = await client.indices.exists('test-index')
 
-const closeIndice = await client.indices.close('test-index')
+await client.indices.close('test-index')
 
-const openIndice = await client.indices.open('test-index')
+await client.indices.open('test-index')
 
 const settings = await client.indices.settings('test-index')
 ```
@@ -103,17 +103,19 @@ import type {
 
 const document = await client.documents.find<Source>('test-index', '1')
 
-const createDocument = await client.documents.create('test-index', '1', {
+await client.documents.create('test-index', '1', {
     id: 1,
     title: 'My title'
 })
 
-const upsertDocument = await client.documents.upsert('test-index', '1', {
+await client.documents.upsert('test-index', '1', {
     id: 1,
     title: 'My new title'
 })
 
-const deleteDocument = await client.documents.upsert('test-index', '1')
+await client.documents.upsert('test-index', '1')
+
+const exists = await client.documents.exists('test-index', '1')
 ```
 
 <br>
