@@ -9,6 +9,7 @@
 # Getting Started
 
 ### Connect and Check the Health of Elasticsearch
+
 ```ts
 import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
 import type { HealthResponse } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
@@ -16,6 +17,23 @@ import type { HealthResponse } from 'https://deno.land/x/elasticsearch@v1.0.0/mo
 const client = new ElasticsearchClient({ node: 'http://localhost:9200' })
 
 const health: HealthResponse = await client.health()
+```
+
+<br>
+
+### Connect with Auth
+
+```ts
+const elasticUsername = Deno.env.get('ELASTIC_USERNAME')!
+const elasticPassword = Deno.env.get('ELASTIC_PASSWORD')!
+
+const client = new ElasticsearchClient({
+    node: 'https://deno-elastic.es.us-central1.gcp.cloud.es.io:9243',
+    auth: {
+        username: elasticUsername,
+        password: elasticPassword
+    }
+})
 ```
 
 <br>
@@ -30,7 +48,7 @@ interface Source {
     title: string
 }
 
-const res: SearchResponse<Source> = await client.search<Source>('test-index', {
+const result = await client.search<Source>('test-index', {
     query: {
         match: {
             title: 'Deno'
@@ -54,26 +72,22 @@ import type {
     IndicesSettingsFindResponse
 } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
 
-// get indice/s
-const indices: CatIndicesResponse = await client.indices.findAll()
-const indice: IndicesFindResponse = await client.indices.find('test-index')
+const indices = await client.indices.findAll()
 
-// create indice
+const indice = await client.indices.find('test-index')
+
 const createIndiceBody: IndicesCreateBody = {}
-const createIndice: IndicesCreateResponse = await client.indices.create('test-index', createIndiceBody)
+const createIndice = await client.indices.create('test-index', createIndiceBody)
 
-// delete indice
-const deleteIndice: IndicesDeleteResponse = await client.indices.delete('test-index')
+const deleteIndice = await client.indices.delete('test-index')
 
-// check if indice exists
-const indiceExists: boolean = await client.indices.exists('test-index')
+const indiceExists = await client.indices.exists('test-index')
 
-// close/open indice
-const closeIndice: IndicesStatusResponse = await client.indices.close('test-index')
-const openIndice: IndicesStatusResponse = await client.indices.open('test-index')
+const closeIndice = await client.indices.close('test-index')
 
-// get settings of an indice
-const settings: IndicesSettingsFindResponse = await client.indices.settings('test-index')
+const openIndice = await client.indices.open('test-index')
+
+const settings = await client.indices.settings('test-index')
 ```
 
 <br>
@@ -87,19 +101,19 @@ import type {
     DocumentsDeleteResponse
 } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
 
-const document: DocumentsFindResponse<Source> = await client.documents.find<Source>('test-index', '1')
+const document = await client.documents.find<Source>('test-index', '1')
 
-const createDocument: DocumentsIndexResponse = await client.documents.create('test-index', '1', {
+const createDocument = await client.documents.create('test-index', '1', {
     id: 1,
     title: 'My title'
 })
 
-const upsertDocument: DocumentsIndexResponse = await client.documents.upsert('test-index', '1', {
+const upsertDocument = await client.documents.upsert('test-index', '1', {
     id: 1,
     title: 'My new title'
 })
 
-const deleteDocument: DocumentsDeleteResponse = await client.documents.upsert('test-index', '1')
+const deleteDocument = await client.documents.upsert('test-index', '1')
 ```
 
 <br>
@@ -108,7 +122,7 @@ const deleteDocument: DocumentsDeleteResponse = await client.documents.upsert('t
 
 ```ts
 try {
-    const res = await client.indices.find('test-index22')
+    const result = await client.indices.find('test-index')
 } catch (err) {
     console.log(err)
 }
