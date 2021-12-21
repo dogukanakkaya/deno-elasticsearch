@@ -28,10 +28,9 @@ import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v1.0.0/mo
 interface Source {
     id: number
     title: string
-    description: string
 }
 
-const res: SearchResponse<Source> = await client.search<Source>('airport_codes', {
+const res: SearchResponse<Source> = await client.search<Source>('test-index', {
     query: {
         match: {
             title: 'Deno'
@@ -83,13 +82,24 @@ const settings: IndicesSettingsFindResponse = await client.indices.settings('tes
 
 ```ts
 import type {
-    CreateDocumentResponse
+    DocumentsFindResponse,
+    DocumentsIndexResponse,
+    DocumentsDeleteResponse
 } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
 
-const createDocument: CreateDocumentResponse = await client.documents.create('test-index', {
+const document: DocumentsFindResponse<Source> = await client.documents.find<Source>('test-index', '1')
+
+const createDocument: DocumentsIndexResponse = await client.documents.create('test-index', '1', {
     id: 1,
-    title: 'test'
+    title: 'My title'
 })
+
+const upsertDocument: DocumentsIndexResponse = await client.documents.upsert('test-index', '1', {
+    id: 1,
+    title: 'My new title'
+})
+
+const deleteDocument: DocumentsDeleteResponse = await client.documents.upsert('test-index', '1')
 ```
 
 <br>
