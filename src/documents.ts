@@ -1,8 +1,8 @@
 import Request, { toQueryString } from './helpers/request.ts'
 
 import type {
-    DocumentsFindRequest,
-    DocumentsFindResponse,
+    DocumentsGetRequest,
+    DocumentsGetResponse,
     DocumentsIndexRequest,
     DocumentsIndexResponse,
     DocumentsDeleteRequest,
@@ -16,7 +16,7 @@ export default class Documents {
         this.#request = request
     }
 
-    find<T>(target: string, _id: string, queryParams: DocumentsFindRequest = {}): Promise<DocumentsFindResponse<T>> {
+    get<T>(target: string, _id: string, queryParams: DocumentsGetRequest = {}): Promise<DocumentsGetResponse<T>> {
         return this.#request.send(`/${target}/_doc/${_id}?${toQueryString(queryParams)}`)
     }
 
@@ -40,7 +40,7 @@ export default class Documents {
         })
     }
 
-    exists(target: string, _id: string, queryParams: DocumentsFindRequest = {}): Promise<boolean> {
+    exists(target: string, _id: string, queryParams: DocumentsGetRequest = {}): Promise<boolean> {
         return this.#request.send(`/${target}/_doc/${_id}?${toQueryString(queryParams)}`, {
             method: 'HEAD'
         }).then(() => true).catch(() => false)

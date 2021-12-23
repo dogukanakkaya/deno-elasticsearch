@@ -6,7 +6,7 @@ import {
     WaitForActiveShards
 } from './index.ts'
 
-export interface DocumentsFindRequest {
+export interface DocumentsGetRequest {
     preference?: string
     realtime?: boolean
     refresh?: boolean
@@ -19,7 +19,7 @@ export interface DocumentsFindRequest {
     version_type?: VersionType
 }
 
-export interface DocumentsFindResponse<T> {
+export interface DocumentsGetResponse<T> {
     _index: Index
     _type: string
     _id: string

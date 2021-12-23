@@ -3,8 +3,8 @@ import Request, { toQueryString } from './helpers/request.ts'
 import type {
     CatIndicesRequest,
     CatIndicesResponse,
-    IndicesFindResponse,
-    IndicesFindRequest,
+    IndicesGetRequest,
+    IndicesGetResponse,
     IndicesCreateBody,
     IndicesCreateRequest,
     IndicesCreateResponse,
@@ -24,11 +24,11 @@ export default class Indices {
         this.#request = request
     }
 
-    findAll(target = '*', queryParams: CatIndicesRequest = {}): Promise<CatIndicesResponse> {
+    getAll(target = '*', queryParams: CatIndicesRequest = {}): Promise<CatIndicesResponse> {
         return this.#request.send(`/_cat/indices/${target}?format=json&pretty=1&${toQueryString(queryParams)}`)
     }
 
-    find(target: string, queryParams: IndicesFindRequest = {}): Promise<IndicesFindResponse> {
+    get(target: string, queryParams: IndicesGetRequest = {}): Promise<IndicesGetResponse> {
         return this.#request.send(`/${target}?${toQueryString(queryParams)}`)
     }
 

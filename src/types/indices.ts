@@ -46,7 +46,7 @@ export interface CatIndicesRequest extends CommonCatQueryParameters {
     pri?: boolean
 }
 
-export interface IndicesFindRequest {
+export interface IndicesGetRequest {
     allow_no_indices?: boolean
     expand_wildcards?: string
     ignore_unavailable?: boolean
@@ -55,7 +55,7 @@ export interface IndicesFindRequest {
     local?: boolean
 }
 
-export interface IndicesFindResponse {
+export interface IndicesGetResponse {
     [key: Index]: IndiceIndexState
 }
 

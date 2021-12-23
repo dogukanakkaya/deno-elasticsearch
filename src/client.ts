@@ -15,14 +15,14 @@ export default class Client {
         this.#options = options
 
         this.#request = new Request(this.#options.node, {
-            headers: this.createHeaders()
+            headers: this.#createHeaders()
         })
 
         this.indices = new Indices(this.#request)
         this.documents = new Documents(this.#request)
     }
 
-    createHeaders(): Headers {
+    #createHeaders(): Headers {
         const headers: Headers = new Headers()
 
         headers.append('Content-Type', 'application/json')
