@@ -5,16 +5,17 @@ import type {
     CatIndicesResponse,
     IndicesGetRequest,
     IndicesGetResponse,
-    IndicesCreateBody,
     IndicesCreateRequest,
     IndicesCreateResponse,
     IndicesDeleteRequest,
     IndicesDeleteResponse,
     IndicesExistsRequest,
-    IndicesStatusRequest,
-    IndicesStatusResponse,
-    IndicesSettingsFindRequest,
-    IndicesSettingsFindResponse
+    IndicesCloseRequest,
+    IndicesCloseResponse,
+    IndicesOpenRequest,
+    IndicesOpenResponse,
+    IndicesSettingsGetRequest,
+    IndicesSettingsGetResponse
 } from './types/index.ts'
 
 export default class Indices {
@@ -24,46 +25,46 @@ export default class Indices {
         this.#request = request
     }
 
-    getAll(target = '*', queryParams: CatIndicesRequest = {}): Promise<CatIndicesResponse> {
+    getAll({ target = '*', queryParams }: CatIndicesRequest): Promise<CatIndicesResponse> {
         return this.#request.send(`/_cat/indices/${target}?format=json&pretty=1&${toQueryString(queryParams)}`)
     }
 
-    get(target: string, queryParams: IndicesGetRequest = {}): Promise<IndicesGetResponse> {
+    get({ target, queryParams }: IndicesGetRequest): Promise<IndicesGetResponse> {
         return this.#request.send(`/${target}?${toQueryString(queryParams)}`)
     }
 
-    create(target: string, body: IndicesCreateBody = {}, queryParams: IndicesCreateRequest = {}): Promise<IndicesCreateResponse> {
-        return this.#request.send(`/${target}?${toQueryString(queryParams)}`, {
+    create({ index, body, queryParams }: IndicesCreateRequest): Promise<IndicesCreateResponse> {
+        return this.#request.send(`/${index}?${toQueryString(queryParams)}`, {
             method: 'PUT',
             body: JSON.stringify(body)
         })
     }
 
-    delete(target: string, queryParams: IndicesDeleteRequest = {}): Promise<IndicesDeleteResponse> {
-        return this.#request.send(`/${target}?${toQueryString(queryParams)}`, {
+    delete({ index, queryParams }: IndicesDeleteRequest): Promise<IndicesDeleteResponse> {
+        return this.#request.send(`/${index}?${toQueryString(queryParams)}`, {
             method: 'DELETE'
         })
     }
 
-    exists(target: string, queryParams: IndicesExistsRequest = {}): Promise<boolean> {
+    exists({ target, queryParams }: IndicesExistsRequest): Promise<boolean> {
         return this.#request.send(`/${target}?${toQueryString(queryParams)}`, {
             method: 'HEAD'
         }).then(() => true).catch(() => false)
     }
 
-    close(target: string, queryParams: IndicesStatusRequest = {}): Promise<IndicesStatusResponse> {
-        return this.#request.send(`/${target}/_close?${toQueryString(queryParams)}`, {
+    close({ index, queryParams }: IndicesCloseRequest): Promise<IndicesCloseResponse> {
+        return this.#request.send(`/${index}/_close?${toQueryString(queryParams)}`, {
             method: 'POST'
         })
     }
 
-    open(target: string, queryParams: IndicesStatusRequest = {}): Promise<IndicesStatusResponse> {
+    open({ target, queryParams }: IndicesOpenRequest): Promise<IndicesOpenResponse> {
         return this.#request.send(`/${target}/_open?${toQueryString(queryParams)}`, {
             method: 'POST'
         })
     }
 
-    settings(target: string, setting = '', queryParams: IndicesSettingsFindRequest = {}): Promise<IndicesSettingsFindResponse> {
+    settings({ target, setting, queryParams }: IndicesSettingsGetRequest): Promise<IndicesSettingsGetResponse> {
         return this.#request.send(`/${target}/_settings/${setting}?${toQueryString(queryParams)}`)
     }
 }

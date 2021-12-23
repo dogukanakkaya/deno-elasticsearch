@@ -2,6 +2,8 @@ export type Timeout = string | number
 
 export type Index = string
 
+export type Target = Index
+
 export type Bytes = 'b' | 'kb' | 'mb' | 'gb' | 'tb' | 'pb'
 
 export type WaitForActiveShards = number | 'all'

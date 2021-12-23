@@ -2,6 +2,7 @@ import type {
     Health,
     Timeout,
     Index,
+    Target,
     CommonCatQueryParameters,
     Bytes,
     WaitForActiveShards
@@ -36,9 +37,7 @@ export interface CatIndice {
     'pri.store.size'?: string
 }
 
-export type CatIndicesResponse = CatIndice[]
-
-export interface CatIndicesRequest extends CommonCatQueryParameters {
+export interface CatIndicesRequestQueryParams extends CommonCatQueryParameters {
     bytes?: Bytes
     expand_wildcards?: string
     health?: Health
@@ -46,7 +45,14 @@ export interface CatIndicesRequest extends CommonCatQueryParameters {
     pri?: boolean
 }
 
-export interface IndicesGetRequest {
+export interface CatIndicesRequest {
+    target?: Target
+    queryParams?: CatIndicesRequestQueryParams
+}
+
+export type CatIndicesResponse = CatIndice[]
+
+export interface IndicesGetRequestQueryParams {
     allow_no_indices?: boolean
     expand_wildcards?: string
     ignore_unavailable?: boolean
@@ -55,20 +61,32 @@ export interface IndicesGetRequest {
     local?: boolean
 }
 
+
+export interface IndicesGetRequest {
+    target: Target
+    queryParams?: IndicesGetRequestQueryParams
+}
+
 export interface IndicesGetResponse {
     [key: Index]: IndiceIndexState
 }
 
-export interface IndicesCreateBody {
+export interface IndicesCreateRequestBody {
     mappings?: unknown
     settings?: Record<string, any>
     aliases?: Record<Index, IndiceAlias>
 }
 
-export interface IndicesCreateRequest {
+export interface IndicesCreateRequestQueryParams {
     wait_for_active_shards?: WaitForActiveShards
     master_timeout?: Timeout
     timeout?: Timeout
+}
+
+export interface IndicesCreateRequest {
+    index: Index
+    body?: IndicesCreateRequestBody
+    queryParams?: IndicesCreateRequestQueryParams
 }
 
 export interface IndicesCreateResponse {
@@ -77,18 +95,23 @@ export interface IndicesCreateResponse {
     acknowledged?: boolean
 }
 
-export interface IndicesDeleteRequest {
+export interface IndicesDeleteRequestQueryParams {
     expand_wildcards?: string
     ignore_unavailable?: boolean
     master_timeout?: Timeout
     timeout?: Timeout
 }
 
+export interface IndicesDeleteRequest {
+    index: Index
+    queryParams?: IndicesDeleteRequestQueryParams
+}
+
 export interface IndicesDeleteResponse {
     acknowledged: boolean
 }
 
-export interface IndicesExistsRequest {
+export interface IndicesExistsRequestQueryParams {
     allow_no_indices?: boolean
     expand_wildcards?: string
     ignore_unavailable?: boolean
@@ -97,7 +120,12 @@ export interface IndicesExistsRequest {
     local?: boolean
 }
 
-export interface IndicesStatusRequest {
+export interface IndicesExistsRequest {
+    target: Target
+    queryParams?: IndicesExistsRequestQueryParams
+}
+
+export interface IndicesCloseRequestQueryParams {
     allow_no_indices?: boolean
     expand_wildcards?: string
     ignore_unavailable?: boolean
@@ -106,11 +134,34 @@ export interface IndicesStatusRequest {
     timeout?: Timeout
 }
 
-export interface IndicesStatusResponse {
+export interface IndicesCloseRequest {
+    index: Index
+    queryParams?: IndicesCloseRequestQueryParams
+}
+
+export interface IndicesCloseResponse {
     acknowledged: boolean
 }
 
-export interface IndicesSettingsFindRequest {
+export interface IndicesOpenRequestQueryParams {
+    allow_no_indices?: boolean
+    expand_wildcards?: string
+    ignore_unavailable?: boolean
+    wait_for_active_shards?: WaitForActiveShards
+    master_timeout?: Timeout
+    timeout?: Timeout
+}
+
+export interface IndicesOpenRequest {
+    target: Target
+    queryParams?: IndicesOpenRequestQueryParams
+}
+
+export interface IndicesOpenResponse {
+    acknowledged: boolean
+}
+
+export interface IndicesSettingsGetRequestQueryParams {
     allow_no_indices?: boolean
     expand_wildcards?: string
     flat_settings?: boolean
@@ -120,6 +171,12 @@ export interface IndicesSettingsFindRequest {
     master_timeout?: Timeout
 }
 
-export interface IndicesSettingsFindResponse {
+export interface IndicesSettingsGetRequest {
+    target: Target
+    setting?: string
+    queryParams?: IndicesSettingsGetRequestQueryParams
+}
+
+export interface IndicesSettingsGetResponse {
     [key: Index]: IndiceIndexState
 }
