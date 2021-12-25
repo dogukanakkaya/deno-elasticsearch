@@ -11,8 +11,8 @@
 ### Connect and Check the Health of Elasticsearch
 
 ```ts
-import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
-import type { HealthResponse } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
+import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v7.16.0/mod.ts'
+import type { HealthResponse } from 'https://deno.land/x/elasticsearch@v7.16.0/mod.ts'
 
 const client = new ElasticsearchClient({ node: 'http://localhost:9200' })
 
@@ -24,14 +24,14 @@ const health: HealthResponse = await client.health()
 ### Connect with Auth
 
 ```ts
-const elasticUsername = Deno.env.get('ELASTIC_USERNAME')!
-const elasticPassword = Deno.env.get('ELASTIC_PASSWORD')!
+const username = Deno.env.get('ELASTIC_USERNAME')!
+const password = Deno.env.get('ELASTIC_PASSWORD')!
 
 const client = new ElasticsearchClient({
     node: 'https://deno-elastic.es.us-central1.gcp.cloud.es.io:9243',
     auth: {
-        username: elasticUsername,
-        password: elasticPassword
+        username,
+        password
     }
 })
 ```
@@ -41,7 +41,7 @@ const client = new ElasticsearchClient({
 ### Search
 
 ```ts
-import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
+import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.0/mod.ts'
 
 interface Source {
     title: string
