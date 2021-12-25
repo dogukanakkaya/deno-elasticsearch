@@ -3,7 +3,7 @@ import Indices from './indices.ts'
 import Documents from './documents.ts'
 import Request, { toQueryString } from './helpers/request.ts'
 
-import { SearchResponse, HealthResponse } from './types/index.ts'
+import { SearchRequest, SearchResponse, HealthResponse } from './types/index.ts'
 
 export default class Client {
     readonly #options: ClientOptions
@@ -40,9 +40,11 @@ export default class Client {
         return this.#request.send(`/_cluster/health`)
     }
 
-    // TODO: queryParams type
-    search<T>(index: string, body: unknown, queryParams: any = {}): Promise<SearchResponse<T>> {
-        return this.#request.send(`/${index}/_search?source_content_type=application/json&source=${JSON.stringify(body)}&${toQueryString(queryParams)}`)
+    search<T>({ target = '*', body, queryParams }: SearchRequest): Promise<SearchResponse<T>> {
+        return this.#request.send(`/${target}/_search?${toQueryString(queryParams)}`, {
+            method: 'POST',
+            body: JSON.stringify(body)
+        })
     }
 }
 

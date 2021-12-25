@@ -1,6 +1,6 @@
 import type {
     Health,
-    Timeout,
+    Time,
     CommonCatQueryParameters,
     CommonQueryParameters,
     Bytes,
@@ -78,8 +78,8 @@ export interface IndicesCreateRequestBody {
 
 export interface IndicesCreateRequestQueryParams extends CommonQueryParameters {
     wait_for_active_shards?: WaitForActiveShards
-    master_timeout?: Timeout
-    timeout?: Timeout
+    master_timeout?: Time
+    timeout?: Time
 }
 
 export interface IndicesCreateRequest {
@@ -97,8 +97,8 @@ export interface IndicesCreateResponse {
 export interface IndicesDeleteRequestQueryParams extends CommonQueryParameters {
     expand_wildcards?: string
     ignore_unavailable?: boolean
-    master_timeout?: Timeout
-    timeout?: Timeout
+    master_timeout?: Time
+    timeout?: Time
 }
 
 export interface IndicesDeleteRequest {
@@ -129,8 +129,8 @@ export interface IndicesCloseRequestQueryParams extends CommonQueryParameters {
     expand_wildcards?: string
     ignore_unavailable?: boolean
     wait_for_active_shards?: WaitForActiveShards
-    master_timeout?: Timeout
-    timeout?: Timeout
+    master_timeout?: Time
+    timeout?: Time
 }
 
 export interface IndicesCloseRequest {
@@ -147,8 +147,8 @@ export interface IndicesOpenRequestQueryParams extends CommonQueryParameters {
     expand_wildcards?: string
     ignore_unavailable?: boolean
     wait_for_active_shards?: WaitForActiveShards
-    master_timeout?: Timeout
-    timeout?: Timeout
+    master_timeout?: Time
+    timeout?: Time
 }
 
 export interface IndicesOpenRequest {
@@ -167,7 +167,7 @@ export interface IndicesSettingsGetRequestQueryParams extends CommonQueryParamet
     include_defaults?: boolean
     ignore_unavailable?: boolean
     local?: boolean
-    master_timeout?: Timeout
+    master_timeout?: Time
 }
 
 export interface IndicesSettingsGetRequest {

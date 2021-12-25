@@ -1,4 +1,4 @@
-export type Timeout = string | number
+export type Time = string
 
 export type Bytes = 'b' | 'kb' | 'mb' | 'gb' | 'tb' | 'pb'
 
@@ -45,7 +45,7 @@ export interface CommonCatQueryParameters {
     h?: string
     help?: boolean
     local?: boolean
-    master_timeout?: Timeout
+    master_timeout?: Time
     s?: string
     v?: boolean
 }

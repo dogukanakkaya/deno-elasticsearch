@@ -1,6 +1,6 @@
 import {
     ShardStatistics,
-    Timeout,
+    Time,
     VersionType,
     WaitForActiveShards,
     Refresh,
@@ -79,7 +79,7 @@ export interface DocumentsIndexRequestQueryParams extends CommonQueryParameters 
     pipeline?: string
     refresh?: Refresh<'wait_for'>
     routing?: string
-    timeout?: Timeout
+    timeout?: Time
     version?: number
     version_type?: VersionType
     wait_for_active_shards?: WaitForActiveShards
@@ -109,7 +109,7 @@ export interface DocumentsDeleteRequestQueryParams extends CommonQueryParameters
     if_primary_term?: number
     refresh?: Refresh<'wait_for'>
     routing?: string
-    timeout?: Timeout
+    timeout?: Time
     version?: number
     version_type?: VersionType
     wait_for_active_shards?: WaitForActiveShards
@@ -155,7 +155,7 @@ export interface DocumentsBulkRequestQueryParams extends CommonQueryParameters {
     _source?: boolean | string
     _source_excludes?: string
     _source_includes?: string
-    timeout?: Timeout
+    timeout?: Time
     wait_for_active_shards?: WaitForActiveShards
 }
 
