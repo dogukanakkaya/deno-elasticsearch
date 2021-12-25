@@ -6,11 +6,7 @@ export type WaitForActiveShards = number | 'all'
 
 export type VersionType = 'external' | 'external_gte'
 
-export enum Health {
-    Red = 'red',
-    Yellow = 'yellow',
-    Green = 'green'
-}
+export type Health = 'green' | 'yellow' | 'red'
 
 export type Refresh<T = void> = boolean | T
 
