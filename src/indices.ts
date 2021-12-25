@@ -26,7 +26,7 @@ export default class Indices {
     }
 
     getAll({ target = '*', queryParams }: CatIndicesRequest): Promise<CatIndicesResponse> {
-        return this.#request.send(`/_cat/indices/${target}?format=json&pretty=1&${toQueryString(queryParams)}`)
+        return this.#request.send(`/_cat/indices/${target}?format=json&pretty=true&${toQueryString(queryParams)}`)
     }
 
     get({ target, queryParams }: IndicesGetRequest): Promise<IndicesGetResponse> {

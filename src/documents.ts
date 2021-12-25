@@ -1,4 +1,5 @@
 import Request, { toQueryString } from './helpers/request.ts'
+import { ndserialize } from './helpers/serializer.ts'
 
 import type {
     DocumentsGetRequest,
@@ -7,7 +8,8 @@ import type {
     DocumentsIndexRequest,
     DocumentsIndexResponse,
     DocumentsDeleteRequest,
-    DocumentsDeleteResponse
+    DocumentsDeleteResponse,
+    DocumentsBulkRequest
 } from './types/index.ts'
 
 export default class Documents {
@@ -22,7 +24,7 @@ export default class Documents {
     }
 
     mget<T>({ index, body, queryParams }: DocumentsMGetRequest): Promise<DocumentsGetResponse<T>[]> {
-        return this.#request.send(`/${index}/_mget?source_content_type=application/json&source=${JSON.stringify(body)}&${toQueryString(queryParams)}`)
+        return this.#request.send(`/${index ? `${index}/` : ''}_mget?source_content_type=application/json&source=${JSON.stringify(body)}&${toQueryString(queryParams)}`)
     }
 
     index({ target, _id, body, queryParams }: DocumentsIndexRequest): Promise<DocumentsIndexResponse> {
@@ -49,5 +51,12 @@ export default class Documents {
         return this.#request.send(`/${index}/_doc/${_id}?${toQueryString(queryParams)}`, {
             method: 'HEAD'
         }).then(() => true).catch(() => false)
+    }
+
+    bulk({ target, body, queryParams }: DocumentsBulkRequest) {
+        return this.#request.send(`/${target ? `${target}/` : ''}_bulk?${toQueryString(queryParams)}`, {
+            method: 'POST',
+            body: ndserialize(body)
+        })
     }
 }

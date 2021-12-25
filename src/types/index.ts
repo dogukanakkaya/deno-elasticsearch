@@ -1,9 +1,5 @@
 export type Timeout = string | number
 
-export type Index = string
-
-export type Target = Index
-
 export type Bytes = 'b' | 'kb' | 'mb' | 'gb' | 'tb' | 'pb'
 
 export type WaitForActiveShards = number | 'all'
@@ -16,10 +12,12 @@ export enum Health {
     Green = 'green'
 }
 
+export type Refresh<T = void> = boolean | T
+
 export interface HealthResponse {
     cluster_name: string
     status: Health
-    timed_out: boolean,
+    timed_out: boolean
     number_of_nodes: number
     number_of_data_nodes: number
     active_primary_shards: number
@@ -39,7 +37,7 @@ export interface CommonQueryParameters {
     filter_path?: string
     human?: boolean
     pretty?: boolean
-    source_query_string?: string
+    format?: string
 }
 
 export interface CommonCatQueryParameters {

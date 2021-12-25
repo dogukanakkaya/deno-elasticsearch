@@ -1,16 +1,16 @@
 import {
     ShardStatistics,
-    Index,
-    Target,
     Timeout,
     VersionType,
-    WaitForActiveShards
+    WaitForActiveShards,
+    Refresh,
+    CommonQueryParameters
 } from './index.ts'
 
-export interface DocumentsGetRequestQueryParameters {
+export interface DocumentsGetRequestQueryParameters extends CommonQueryParameters {
     preference?: string
     realtime?: boolean
-    refresh?: boolean
+    refresh?: Refresh
     routing?: string
     stored_fields?: string
     _source?: boolean | string
@@ -21,13 +21,13 @@ export interface DocumentsGetRequestQueryParameters {
 }
 
 export interface DocumentsGetRequest {
-    index: Index
+    index: string
     _id: string
     queryParams?: DocumentsGetRequestQueryParameters
 }
 
 export interface DocumentsGetResponse<T> {
-    _index: Index
+    _index: string
     _type: string
     _id: string
     _version: number
@@ -55,10 +55,10 @@ export interface DocumentsMGetRequestBody {
     ids?: string[]
 }
 
-export interface DocumentsMGetRequestQueryParams {
+export interface DocumentsMGetRequestQueryParams extends CommonQueryParameters {
     preference?: string
     realtime?: boolean
-    refresh?: boolean
+    refresh?: Refresh
     routing?: string
     _stored_fields?: string
     _source?: boolean | string
@@ -67,17 +67,17 @@ export interface DocumentsMGetRequestQueryParams {
 }
 
 export interface DocumentsMGetRequest {
-    index?: Index
+    index?: string
     body: DocumentsMGetRequestBody,
     queryParams?: DocumentsMGetRequestQueryParams
 }
 
-export interface DocumentsIndexRequestQueryParams {
+export interface DocumentsIndexRequestQueryParams extends CommonQueryParameters {
     if_seq_no?: number
     if_primary_term?: number
     op_type?: 'index' | 'create'
     pipeline?: string
-    refresh?: boolean | 'wait_for'
+    refresh?: Refresh<'wait_for'>
     routing?: string
     timeout?: Timeout
     version?: number
@@ -87,7 +87,7 @@ export interface DocumentsIndexRequestQueryParams {
 }
 
 export interface DocumentsIndexRequest {
-    target: Target
+    target: string
     body: unknown
     _id: string
     queryParams?: DocumentsIndexRequestQueryParams
@@ -95,7 +95,7 @@ export interface DocumentsIndexRequest {
 
 export interface DocumentsIndexResponse {
     _shards: ShardStatistics
-    _index: Index
+    _index: string
     _type: string
     _id: string
     _version: number
@@ -104,10 +104,10 @@ export interface DocumentsIndexResponse {
     result: 'created' | 'updated'
 }
 
-export interface DocumentsDeleteRequestQueryParams {
+export interface DocumentsDeleteRequestQueryParams extends CommonQueryParameters {
     if_seq_no?: number
     if_primary_term?: number
-    refresh?: boolean | 'wait_for'
+    refresh?: Refresh<'wait_for'>
     routing?: string
     timeout?: Timeout
     version?: number
@@ -116,18 +116,51 @@ export interface DocumentsDeleteRequestQueryParams {
 }
 
 export interface DocumentsDeleteRequest {
-    index: Index
+    index: string
     _id: string
     queryParams?: DocumentsDeleteRequestQueryParams
 }
 
 export interface DocumentsDeleteResponse {
     _shards: ShardStatistics
-    _index: Index
+    _index: string
     _type: string
     _id: string
     _version: number
     _seq_no: number
     _fields?: string
     result?: 'deleted'
+}
+
+export interface DocumentsBulkOperationBody {
+    _index?: string
+    _id?: string
+    require_alias?: boolean
+    dynamic_templates?: Record<string, string>
+}
+
+export interface DocumentsBulkRequestBody {
+    create?: DocumentsBulkOperationBody
+    delete?: Omit<DocumentsBulkOperationBody, 'dynamic_templates'>
+    index?: DocumentsBulkOperationBody
+    update?: Omit<DocumentsBulkOperationBody, 'dynamic_templates'>
+    doc?: unknown
+}
+
+export interface DocumentsBulkRequestQueryParams extends CommonQueryParameters {
+    pipeline?: string
+    refresh?: Refresh<'wait_for'>
+    require_alias?: boolean
+    routing?: string
+    _source?: boolean | string
+    _source_excludes?: string
+    _source_includes?: string
+    timeout?: Timeout
+    wait_for_active_shards?: WaitForActiveShards
+}
+
+export interface DocumentsBulkRequest<T = unknown> {
+    target?: string
+    body: (DocumentsBulkRequestBody | T)[]
+    queryParams?: DocumentsBulkRequestQueryParams
 }

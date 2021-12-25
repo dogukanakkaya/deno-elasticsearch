@@ -1,5 +1,3 @@
-import { Index } from './index.ts'
-
 export interface SearchHit<T> {
     _index: string
     _type: string
@@ -9,7 +7,7 @@ export interface SearchHit<T> {
 }
 
 export interface ShardFailure {
-    index?: Index
+    index?: string
     node?: string
     reason: any
     shard: number

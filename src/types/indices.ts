@@ -1,9 +1,8 @@
 import type {
     Health,
     Timeout,
-    Index,
-    Target,
     CommonCatQueryParameters,
+    CommonQueryParameters,
     Bytes,
     WaitForActiveShards
 } from './index.ts'
@@ -11,7 +10,7 @@ import type {
 export interface IndiceIndexState {
     mappings?: unknown
     settings?: Record<string, any>
-    aliases?: Record<Index, IndiceAlias>
+    aliases?: Record<string, IndiceAlias>
     data_stream?: string
 }
 
@@ -46,13 +45,13 @@ export interface CatIndicesRequestQueryParams extends CommonCatQueryParameters {
 }
 
 export interface CatIndicesRequest {
-    target?: Target
+    target?: string
     queryParams?: CatIndicesRequestQueryParams
 }
 
 export type CatIndicesResponse = CatIndice[]
 
-export interface IndicesGetRequestQueryParams {
+export interface IndicesGetRequestQueryParams extends CommonQueryParameters {
     allow_no_indices?: boolean
     expand_wildcards?: string
     ignore_unavailable?: boolean
@@ -63,39 +62,39 @@ export interface IndicesGetRequestQueryParams {
 
 
 export interface IndicesGetRequest {
-    target: Target
+    target: string
     queryParams?: IndicesGetRequestQueryParams
 }
 
 export interface IndicesGetResponse {
-    [key: Index]: IndiceIndexState
+    [key: string]: IndiceIndexState
 }
 
 export interface IndicesCreateRequestBody {
     mappings?: unknown
     settings?: Record<string, any>
-    aliases?: Record<Index, IndiceAlias>
+    aliases?: Record<string, IndiceAlias>
 }
 
-export interface IndicesCreateRequestQueryParams {
+export interface IndicesCreateRequestQueryParams extends CommonQueryParameters {
     wait_for_active_shards?: WaitForActiveShards
     master_timeout?: Timeout
     timeout?: Timeout
 }
 
 export interface IndicesCreateRequest {
-    index: Index
+    index: string
     body?: IndicesCreateRequestBody
     queryParams?: IndicesCreateRequestQueryParams
 }
 
 export interface IndicesCreateResponse {
-    index: Index
+    index: string
     shards_acknowledged: boolean
     acknowledged?: boolean
 }
 
-export interface IndicesDeleteRequestQueryParams {
+export interface IndicesDeleteRequestQueryParams extends CommonQueryParameters {
     expand_wildcards?: string
     ignore_unavailable?: boolean
     master_timeout?: Timeout
@@ -103,7 +102,7 @@ export interface IndicesDeleteRequestQueryParams {
 }
 
 export interface IndicesDeleteRequest {
-    index: Index
+    index: string
     queryParams?: IndicesDeleteRequestQueryParams
 }
 
@@ -111,7 +110,7 @@ export interface IndicesDeleteResponse {
     acknowledged: boolean
 }
 
-export interface IndicesExistsRequestQueryParams {
+export interface IndicesExistsRequestQueryParams extends CommonQueryParameters {
     allow_no_indices?: boolean
     expand_wildcards?: string
     ignore_unavailable?: boolean
@@ -121,11 +120,11 @@ export interface IndicesExistsRequestQueryParams {
 }
 
 export interface IndicesExistsRequest {
-    target: Target
+    target: string
     queryParams?: IndicesExistsRequestQueryParams
 }
 
-export interface IndicesCloseRequestQueryParams {
+export interface IndicesCloseRequestQueryParams extends CommonQueryParameters {
     allow_no_indices?: boolean
     expand_wildcards?: string
     ignore_unavailable?: boolean
@@ -135,7 +134,7 @@ export interface IndicesCloseRequestQueryParams {
 }
 
 export interface IndicesCloseRequest {
-    index: Index
+    index: string
     queryParams?: IndicesCloseRequestQueryParams
 }
 
@@ -143,7 +142,7 @@ export interface IndicesCloseResponse {
     acknowledged: boolean
 }
 
-export interface IndicesOpenRequestQueryParams {
+export interface IndicesOpenRequestQueryParams extends CommonQueryParameters {
     allow_no_indices?: boolean
     expand_wildcards?: string
     ignore_unavailable?: boolean
@@ -153,7 +152,7 @@ export interface IndicesOpenRequestQueryParams {
 }
 
 export interface IndicesOpenRequest {
-    target: Target
+    target: string
     queryParams?: IndicesOpenRequestQueryParams
 }
 
@@ -161,7 +160,7 @@ export interface IndicesOpenResponse {
     acknowledged: boolean
 }
 
-export interface IndicesSettingsGetRequestQueryParams {
+export interface IndicesSettingsGetRequestQueryParams extends CommonQueryParameters {
     allow_no_indices?: boolean
     expand_wildcards?: string
     flat_settings?: boolean
@@ -172,11 +171,11 @@ export interface IndicesSettingsGetRequestQueryParams {
 }
 
 export interface IndicesSettingsGetRequest {
-    target: Target
+    target: string
     setting?: string
     queryParams?: IndicesSettingsGetRequestQueryParams
 }
 
 export interface IndicesSettingsGetResponse {
-    [key: Index]: IndiceIndexState
+    [key: string]: IndiceIndexState
 }

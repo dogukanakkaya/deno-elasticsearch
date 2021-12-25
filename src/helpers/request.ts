@@ -11,8 +11,8 @@ export default class Request {
         const endpoint = this.#baseUrl.endsWith('/') || url.startsWith('/') ? this.#baseUrl.concat(url) : this.#baseUrl.concat(`/${url}`)
 
         return fetch(endpoint, {
-            ...init,
-            ...this.#init
+            ...this.#init,
+            ...init
         }).then(async (res) => {
             if (['HEAD'].includes(init?.method ?? 'GET')) {
                 if (res.status === 404) {
