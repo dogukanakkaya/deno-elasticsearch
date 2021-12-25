@@ -44,14 +44,14 @@ const client = new ElasticsearchClient({
 import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
 
 interface Source {
-    id: number
     title: string
 }
 
-const result = await client.search<Source>('test-index', {
-    query: {
-        match: {
-            title: 'Deno'
+const res = await client.search<Source>({
+    target: 'test-index',
+    body: {
+        query: {
+            match_all: {}
         }
     }
 })
@@ -62,32 +62,48 @@ const result = await client.search<Source>('test-index', {
 ### Indices
 
 ```ts
-import type {
-    CatIndicesResponse,
-    IndicesFindResponse,
-    IndicesCreateResponse,
-    IndicesCreateBody,
-    IndicesDeleteResponse,
-    IndicesStatusResponse,
-    IndicesSettingsFindResponse
-} from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
+const indices = await client.indices.getAll({
+    queryParams: {
+        health: 'yellow'
+    }
+})
 
-const indices = await client.indices.findAll()
+const indice = await client.indices.get({
+    target: 'test-index',
+    queryParams: {}
+})
 
-const indice = await client.indices.find('test-index')
+await client.indices.create({
+    index: 'test-index',
+    body: {},
+    queryParams: {}
+})
 
-const createIndiceBody: IndicesCreateBody = {}
-await client.indices.create('test-index', createIndiceBody)
+await client.indices.delete({
+    index: 'test-index',
+    queryParams: {}
+})
 
-await client.indices.delete('test-index')
+const exists = await client.indices.exists({
+    target: 'test-index',
+    queryParams: {}
+})
 
-const exists = await client.indices.exists('test-index')
+await client.indices.close({
+    index: 'test-index',
+    queryParams: {}
+})
 
-await client.indices.close('test-index')
+await client.indices.open({
+    target: 'test-index',
+    queryParams: {}
+})
 
-await client.indices.open('test-index')
-
-const settings = await client.indices.settings('test-index')
+const settings = await client.indices.settings({
+    target: 'test-index',
+    setting: '',
+    queryParams: {}
+})
 ```
 
 <br>
@@ -95,37 +111,58 @@ const settings = await client.indices.settings('test-index')
 ### Documents
 
 ```ts
-import type {
-    DocumentsFindResponse,
-    DocumentsIndexResponse,
-    DocumentsDeleteResponse
-} from 'https://deno.land/x/elasticsearch@v1.0.0/mod.ts'
-
-const document = await client.documents.find<Source>('test-index', '1')
-
-await client.documents.create('test-index', '1', {
-    id: 1,
-    title: 'My title'
+const doc = await client.documents.get<Source>({
+    index: 'test-index',
+    _id: '1'
 })
 
-await client.documents.upsert('test-index', '1', {
-    id: 1,
-    title: 'My new title'
+const docs = await client.documents.mget<Source>({
+    // index: 'test-index',
+    body: {
+        docs: [
+            {
+                _id: '1',
+                _index: 'test-index'
+            },
+            {
+                _id: '2',
+                _index: 'test-index'
+            }
+        ]
+    }
 })
 
-await client.documents.upsert('test-index', '1')
+await client.documents.index({
+    target: 'test-index',
+    _id: '1',
+    body: { title: 'Node' }
+})
 
-const exists = await client.documents.exists('test-index', '1')
-```
+await client.documents.upsert({
+    target: 'test-index',
+    _id: '1',
+    body: { title: 'Deno' }
+})
 
-<br>
+await client.documents.delete({
+    index: 'test-index',
+    _id: '1'
+})
 
-### Error Handling
+await client.documents.bulk({
+    // target: 'test-index',
+    body: [
+        { index: { _index: 'test-index2', _id: '2', } },
+        { title: 'Node is great' },
+        { index: { _index: 'test-index2', _id: '3', } },
+        { title: 'Deno is also great' },
+        { update: { _id: '3', _index: "test-index2" } },
+        { doc: { title: 'Deno is much better than node' } }
+    ]
+})
 
-```ts
-try {
-    const result = await client.indices.find('test-index')
-} catch (err) {
-    console.log(err)
-}
+const exists = await client.documents.exists({
+    index: 'test-index',
+    _id: '1'
+})
 ```
