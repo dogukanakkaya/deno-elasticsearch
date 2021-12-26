@@ -14,19 +14,21 @@ export default class Request {
             ...this.#init,
             ...init
         }).then(async (res) => {
-            if (['HEAD'].includes(init?.method ?? 'GET')) {
-                if (res.status === 404) {
-                    throw res.statusText
-                } else {
-                    return res.ok
+            const contentType = res.headers.get('content-type')
+
+            if (contentType && contentType.indexOf('application/json') !== -1) {
+                if (res.status >= 200 && res.status < 300) {
+                    return res.json()
                 }
-            }
 
-            if (res.status >= 200 && res.status < 300) {
-                return res.json()
-            }
+                throw JSON.stringify(await res.json())
+            } else {
+                if (res.ok) {
+                    return true
+                }
 
-            throw JSON.stringify(await res.json())
+                throw res.statusText
+            }
         })
     }
 }
