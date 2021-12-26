@@ -66,7 +66,7 @@ const mres: MSearchResponse<Source> = await client.msearch<{ title: string }>({
     ]
 })
 
-// msearch will not throw and error on not found like search does
+// msearch will not throw an error on not found like search does
 // so you have to check if each response has object 'hits' or 'error'
 mres.responses.forEach((m) => {
     if ('hits' in m) {
