@@ -57,12 +57,14 @@ const res: SearchResponse<Source> = await client.search<Source>({
 })
 
 const mres: MSearchResponse<Source> = await client.msearch<{ title: string }>({
-    target: 'test-index2',
+    // target: 'test-index',
     body: [
-        {},
+        { index: 'test-index' },
         { query: { match: { title: 'Deno' } } },
         { index: 'test-index' },
-        { query: { match_all: {} } },
+        { query: { match: { title: 'Node' } } },
+        { index: 'other-test-index' },
+        { query: { match: { title: 'Rust' } } },
     ]
 })
 
