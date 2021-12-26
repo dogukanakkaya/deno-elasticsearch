@@ -47,7 +47,7 @@ interface Source {
     title: string
 }
 
-const res = await client.search<Source>({
+const res: SearchResponse<Source> = await client.search<Source>({
     target: 'test-index',
     body: {
         query: {
@@ -55,6 +55,27 @@ const res = await client.search<Source>({
         }
     }
 })
+
+const mres: MSearchResponse<Source> = await client.msearch<{ title: string }>({
+    target: 'test-index2',
+    body: [
+        {},
+        { query: { match: { title: 'Deno' } } },
+        { index: 'test-index' },
+        { query: { match_all: {} } },
+    ]
+})
+
+// msearch will not throw and error on not found like search does
+// so you have to check if each response has object 'hits' or 'error'
+mres.responses.forEach((m) => {
+    if ('hits' in m) {
+        console.log(m.status)
+    } else if ('error' in m) {
+        console.log(m.error.root_cause[0].reason)
+    }
+})
+
 ```
 
 <br>
