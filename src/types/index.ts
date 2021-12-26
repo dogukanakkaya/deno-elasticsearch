@@ -28,6 +28,22 @@ export interface HealthResponse {
     active_shards_percent_as_number: number
 }
 
+export interface ErrorCause {
+    type: string
+    reason: string
+    'resource.type': string
+    'resource.id': string
+    index_uuid: string
+    index: string
+}
+
+export interface ErrorResponseBase {
+    error: {
+        root_cause: ErrorCause[]
+    }
+    status: number
+}
+
 export interface CommonQueryParameters {
     error_trace?: boolean
     filter_path?: string

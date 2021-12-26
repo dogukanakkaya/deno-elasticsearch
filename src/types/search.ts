@@ -1,8 +1,38 @@
-import { Time } from './index.ts'
+import { Time, ErrorResponseBase } from './index.ts'
 
 export type SearchType = 'query_then_fetch' | 'dfs_query_then_fetch'
 
 export type SuggestMode = 'always' | 'missing' | 'popular'
+
+export interface SearchHit<T> {
+    _index: string
+    _type: string
+    _id: string
+    _score: number
+    _source: T
+}
+
+export interface ShardFailure {
+    index?: string
+    node?: string
+    reason: any
+    shard: number
+    status?: string
+}
+
+export interface ShardStatistics {
+    total: number
+    successful: number
+    failed: number
+    skipped?: number
+    failures?: ShardFailure[]
+}
+
+export interface Explanation {
+    value: number
+    description: string
+    details: Explanation[]
+}
 
 export interface SearchRequestQueryParams {
     allow_no_indices?: boolean
@@ -55,37 +85,7 @@ export interface SearchRequest {
     queryParams?: SearchRequestQueryParams
 }
 
-export interface SearchHit<T> {
-    _index: string
-    _type: string
-    _id: string
-    _score: number
-    _source: T
-}
-
-export interface ShardFailure {
-    index?: string
-    node?: string
-    reason: any
-    shard: number
-    status?: string
-}
-
-export interface ShardStatistics {
-    total: number
-    successful: number
-    failed: number
-    skipped?: number
-    failures?: ShardFailure[]
-}
-
-export interface Explanation {
-    value: number
-    description: string
-    details: Explanation[]
-}
-
-export interface SearchResponse<T> {
+export interface SearchResponse<T = unknown> {
     took: number
     timed_out: boolean
     _scroll_id?: string
@@ -103,4 +103,19 @@ export interface SearchResponse<T> {
         sort?: string[]
     }
     aggregations?: any
+}
+
+export interface MSearchRequest {
+    target?: string
+    body: unknown[]
+    queryParams?: SearchRequestQueryParams
+}
+
+export interface MSearchResponseItem<T = unknown> extends SearchResponse<T> {
+    status: number
+}
+
+export interface MSearchResponse<T = unknown> {
+    took: number
+    responses: (MSearchResponseItem<T> | ErrorResponseBase)[]
 }

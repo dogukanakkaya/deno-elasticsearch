@@ -2,8 +2,15 @@ import { encode } from '../deps.ts'
 import Indices from './indices.ts'
 import Documents from './documents.ts'
 import Request, { toQueryString } from './helpers/request.ts'
+import { ndserialize } from './helpers/serializer.ts'
 
-import { SearchRequest, SearchResponse, HealthResponse } from './types/index.ts'
+import {
+    SearchRequest,
+    SearchResponse,
+    MSearchRequest,
+    MSearchResponse,
+    HealthResponse
+} from './types/index.ts'
 
 export default class Client {
     readonly #options: ClientOptions
@@ -44,6 +51,13 @@ export default class Client {
         return this.#request.send(`/${target}/_search?${toQueryString(queryParams)}`, {
             method: 'POST',
             body: JSON.stringify(body)
+        })
+    }
+
+    msearch<T>({ target = '*', body, queryParams }: MSearchRequest): Promise<MSearchResponse<T>> {
+        return this.#request.send(`/${target}/_msearch?${toQueryString(queryParams)}`, {
+            method: 'POST',
+            body: ndserialize(body)
         })
     }
 }
