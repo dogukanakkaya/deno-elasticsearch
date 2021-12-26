@@ -11,8 +11,8 @@
 ### Connect and Check the Health of Elasticsearch
 
 ```ts
-import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v7.16.0/mod.ts'
-import type { HealthResponse } from 'https://deno.land/x/elasticsearch@v7.16.0/mod.ts'
+import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
+import type { HealthResponse } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
 
 const client = new ElasticsearchClient({ node: 'http://localhost:9200' })
 
@@ -41,7 +41,7 @@ const client = new ElasticsearchClient({
 ### Search
 
 ```ts
-import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.0/mod.ts'
+import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
 
 interface Source {
     title: string
