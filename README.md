@@ -113,7 +113,8 @@ const settings = await client.indices.settings({
 ```ts
 const doc = await client.documents.get<Source>({
     index: 'test-index',
-    _id: '1'
+    _id: '1',
+    queryParams: {}
 })
 
 const docs = await client.documents.mget<Source>({
@@ -129,24 +130,28 @@ const docs = await client.documents.mget<Source>({
                 _index: 'test-index'
             }
         ]
-    }
+    },
+    queryParams: {}
 })
 
 await client.documents.index({
     target: 'test-index',
     _id: '1',
-    body: { title: 'Node' }
+    body: { title: 'Node' },
+    queryParams: {}
 })
 
 await client.documents.upsert({
     target: 'test-index',
     _id: '1',
-    body: { title: 'Deno' }
+    body: { title: 'Deno' },
+    queryParams: {}
 })
 
 await client.documents.delete({
     index: 'test-index',
-    _id: '1'
+    _id: '1',
+    queryParams: {}
 })
 
 await client.documents.bulk({
@@ -158,11 +163,13 @@ await client.documents.bulk({
         { title: 'Deno is also great' },
         { update: { _id: '3', _index: "test-index2" } },
         { doc: { title: 'Deno is much better than node' } }
-    ]
+    ],
+    queryParams: {}
 })
 
 const exists = await client.documents.exists({
     index: 'test-index',
-    _id: '1'
+    _id: '1',
+    queryParams: {}
 })
 ```
