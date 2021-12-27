@@ -2,6 +2,7 @@ import Rest from './rest.ts'
 import { toQueryString } from '../helpers/mod.ts'
 
 import type {
+    CommonQueryParameters,
     Health,
     Bytes,
     Time
@@ -21,15 +22,13 @@ export default class Cat extends Rest {
     }
 }
 
-export interface CommonCatQueryParameters {
-    format?: string
+export interface CommonCatQueryParameters extends CommonQueryParameters {
     h?: string
     help?: boolean
     local?: boolean
     master_timeout?: Time
     s?: string
     v?: boolean
-    pretty?: boolean
 }
 
 export interface CatIndice {
