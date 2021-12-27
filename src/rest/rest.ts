@@ -1,4 +1,4 @@
-import Request from './helpers/request.ts'
+import { Request } from '../helpers/mod.ts'
 
 export default abstract class Rest {
     protected readonly request: Request

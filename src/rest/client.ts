@@ -1,4 +1,61 @@
-import { Time, ErrorResponseBase } from './index.ts'
+import { encode } from '../../deps.ts'
+import Cluster from './cluster.ts'
+import Cat from './cat.ts'
+import Indices from './indices.ts'
+import Documents from './documents.ts'
+import { Request, toQueryString, ndserialize } from '../helpers/mod.ts'
+
+import type { Time, ErrorResponseBase } from './types.d.ts'
+
+export default class Client {
+    readonly #options: ClientOptions
+    readonly #request: Request
+    readonly cluster: Cluster
+    readonly cat: Cat
+    readonly indices: Indices
+    readonly documents: Documents
+
+    constructor(options: ClientOptions) {
+        this.#options = options
+
+        this.#request = new Request(this.#options.node, {
+            headers: this.#createHeaders()
+        })
+
+        this.cluster = new Cluster(this.#request)
+        this.cat = new Cat(this.#request)
+        this.indices = new Indices(this.#request)
+        this.documents = new Documents(this.#request)
+    }
+
+    #createHeaders(): Headers {
+        const headers: Headers = new Headers()
+
+        headers.append('Content-Type', 'application/json')
+
+        if (this.#options.auth) {
+            const { username, password } = this.#options.auth
+
+            headers.append('Authorization', `Basic ${encode(`${username}:${password}`)}`)
+        }
+
+        return headers
+    }
+
+    search<T>({ target = '*', body, queryParams }: SearchRequest): Promise<SearchResponse<T>> {
+        return this.#request.send(`/${target}/_search?${toQueryString(queryParams)}`, {
+            method: 'POST',
+            body: JSON.stringify(body)
+        })
+    }
+
+    msearch<T>({ target = '*', body, queryParams }: MSearchRequest): Promise<MSearchResponse<T>> {
+        return this.#request.send(`/${target}/_msearch?${toQueryString(queryParams)}`, {
+            method: 'POST',
+            body: ndserialize(body)
+        })
+    }
+}
 
 export type SearchType = 'query_then_fetch' | 'dfs_query_then_fetch'
 
@@ -118,4 +175,14 @@ export interface MSearchResponseItem<T = unknown> extends SearchResponse<T> {
 export interface MSearchResponse<T = unknown> {
     took: number
     responses: (MSearchResponseItem<T> | ErrorResponseBase)[]
+}
+
+interface ClientAuth {
+    username: string
+    password: string
+}
+
+interface ClientOptions {
+    node: string
+    auth?: ClientAuth
 }

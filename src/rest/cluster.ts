@@ -1,4 +1,18 @@
-import { Time, Health, WaitForActiveShards, WaitForEvents } from './index.ts'
+import Rest from './rest.ts'
+import { toQueryString } from '../helpers/mod.ts'
+
+import type {
+    Time,
+    Health,
+    WaitForActiveShards,
+    WaitForEvents
+} from './types.d.ts'
+
+export default class Cluster extends Rest {
+    health({ target = '', queryParams = {} }: ClusterHealthRequest = {}): Promise<ClusterHealthResponse> {
+        return this.request.send(`/_cluster/health/${target}?${toQueryString(queryParams)}`)
+    }
+}
 
 export interface ClusterHealthRequestQueryParams {
     level?: string

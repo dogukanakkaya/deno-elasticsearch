@@ -1,8 +1,21 @@
-import {
+import Rest from './rest.ts'
+import { toQueryString } from '../helpers/mod.ts'
+
+import type {
     Health,
     Bytes,
     Time
-} from './index.ts'
+} from './types.d.ts'
+
+export default class Cat extends Rest {
+    indices({ target = '*', queryParams = { format: 'json', pretty: true } }: CatIndicesRequest = {}): Promise<CatIndicesResponse> {
+        return this.request.send(`/_cat/indices/${target}?${toQueryString(queryParams)}`)
+    }
+
+    aliases({ alias = '*', queryParams = { format: 'json', pretty: true } }: CatAliasesRequest = {}): Promise<CatAliasesResponse> {
+        return this.request.send(`/_cat/aliases/${alias}?${toQueryString(queryParams)}`)
+    }
+}
 
 export interface CommonCatQueryParameters {
     format?: string

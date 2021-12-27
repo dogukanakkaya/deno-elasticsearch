@@ -1,2 +1,2 @@
-export { default as Client } from './src/client.ts'
-export * from './src/types/index.ts'
+export { default as Client } from './src/rest/client.ts'
+export * from './src/rest/types.d.ts'
