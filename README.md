@@ -8,37 +8,35 @@
 
 # Getting Started
 
-### Connect and Check the Health of Elasticsearch
+## Connect
 
 ```ts
 import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
-import type { HealthResponse } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
-
-const client = new ElasticsearchClient({ node: 'http://localhost:9200' })
-
-const health: HealthResponse = await client.health()
-```
-
-<br>
-
-### Connect with Auth
-
-```ts
-const username = Deno.env.get('ELASTIC_USERNAME')!
-const password = Deno.env.get('ELASTIC_PASSWORD')!
 
 const client = new ElasticsearchClient({
-    node: 'https://deno-elastic.es.us-central1.gcp.cloud.es.io:9243',
+    node: 'http://localhost:9200',
+    /*
     auth: {
-        username,
-        password
+        username: 'elastic',
+        password: 'password'
     }
+    */
 })
 ```
 
 <br>
 
-### Search
+## Cluster APIs
+
+```ts
+import type { ClusterHealthResponse } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
+
+const health: ClusterHealthResponse = await client.cluster.health()
+```
+
+<br>
+
+## Search APIs
 
 ```ts
 import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
@@ -82,13 +80,28 @@ mres.responses.forEach((m) => {
 
 <br>
 
-### Indices
+## Cat APIs
 
 ```ts
-const indices = await client.indices.getAll({
-    queryParams: {
-        health: 'yellow'
-    }
+const indices = await client.cat.indices({
+    target: '*',
+    queryParams: {}
+})
+
+const aliases = await client.cat.aliases({
+    alias: '*',
+    queryParams: {}
+})
+```
+
+<br>
+
+## Index APIs
+
+```ts
+const indices = await client.indices.get({
+    target: '*',
+    queryParams: {}
 })
 
 const indice = await client.indices.get({
@@ -131,7 +144,7 @@ const settings = await client.indices.settings({
 
 <br>
 
-### Documents
+## Document APIs
 
 ```ts
 const doc = await client.documents.get<Source>({
