@@ -1,4 +1,6 @@
 import { encode } from '../deps.ts'
+import Cluster from './cluster.ts'
+import Cat from './cat.ts'
 import Indices from './indices.ts'
 import Documents from './documents.ts'
 import Request, { toQueryString } from './helpers/request.ts'
@@ -8,13 +10,14 @@ import {
     SearchRequest,
     SearchResponse,
     MSearchRequest,
-    MSearchResponse,
-    HealthResponse
+    MSearchResponse
 } from './types/index.ts'
 
 export default class Client {
     readonly #options: ClientOptions
     readonly #request: Request
+    readonly cluster: Cluster
+    readonly cat: Cat
     readonly indices: Indices
     readonly documents: Documents
 
@@ -25,6 +28,8 @@ export default class Client {
             headers: this.#createHeaders()
         })
 
+        this.cluster = new Cluster(this.#request)
+        this.cat = new Cat(this.#request)
         this.indices = new Indices(this.#request)
         this.documents = new Documents(this.#request)
     }
@@ -41,10 +46,6 @@ export default class Client {
         }
 
         return headers
-    }
-
-    health(): Promise<HealthResponse> {
-        return this.#request.send(`/_cluster/health`)
     }
 
     search<T>({ target = '*', body, queryParams }: SearchRequest): Promise<SearchResponse<T>> {

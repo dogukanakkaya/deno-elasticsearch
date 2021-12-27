@@ -1,9 +1,6 @@
 import type {
-    Health,
     Time,
-    CommonCatQueryParameters,
     CommonQueryParameters,
-    Bytes,
     WaitForActiveShards
 } from './index.ts'
 
@@ -22,34 +19,6 @@ export interface IndiceAlias {
     routing?: string
     search_routing?: string
 }
-
-export interface CatIndice {
-    health: Health
-    status: string
-    index: string
-    uuid: string
-    pri: number
-    rep: number
-    'docs.count'?: number
-    'docs.deleted'?: number
-    'store.size'?: string
-    'pri.store.size'?: string
-}
-
-export interface CatIndicesRequestQueryParams extends CommonCatQueryParameters {
-    bytes?: Bytes
-    expand_wildcards?: string
-    health?: Health
-    include_unloaded_segments?: boolean
-    pri?: boolean
-}
-
-export interface CatIndicesRequest {
-    target?: string
-    queryParams?: CatIndicesRequestQueryParams
-}
-
-export type CatIndicesResponse = CatIndice[]
 
 export interface IndicesGetRequestQueryParams extends CommonQueryParameters {
     allow_no_indices?: boolean
