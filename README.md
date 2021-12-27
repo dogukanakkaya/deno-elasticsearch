@@ -8,7 +8,7 @@
 
 # Getting Started
 
-## Connect
+### Connect
 
 ```ts
 import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
@@ -26,17 +26,7 @@ const client = new ElasticsearchClient({
 
 <br>
 
-## Cluster APIs
-
-```ts
-import type { ClusterHealthResponse } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
-
-const health: ClusterHealthResponse = await client.cluster.health()
-```
-
-<br>
-
-## Search APIs
+### Search APIs
 
 ```ts
 import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
@@ -75,12 +65,21 @@ mres.responses.forEach((m) => {
         console.log(m.error.root_cause[0].reason)
     }
 })
-
 ```
 
 <br>
 
-## Cat APIs
+### Cluster APIs
+
+```ts
+import type { ClusterHealthResponse } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
+
+const health: ClusterHealthResponse = await client.cluster.health()
+```
+
+<br>
+
+### Cat APIs
 
 ```ts
 const indices = await client.cat.indices({
@@ -96,7 +95,7 @@ const aliases = await client.cat.aliases({
 
 <br>
 
-## Index APIs
+### Index APIs
 
 ```ts
 const indices = await client.indices.get({
@@ -144,7 +143,7 @@ const settings = await client.indices.settings({
 
 <br>
 
-## Document APIs
+### Document APIs
 
 ```ts
 const doc = await client.documents.get<Source>({
