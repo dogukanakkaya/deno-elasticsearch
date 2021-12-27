@@ -15,6 +15,10 @@ export default class Cat extends Rest {
     aliases({ alias = '*', queryParams = { format: 'json', pretty: true } }: CatAliasesRequest = {}): Promise<CatAliasesResponse> {
         return this.request.send(`/_cat/aliases/${alias}?${toQueryString(queryParams)}`)
     }
+
+    count({ target = '*', queryParams = { format: 'json', pretty: true } }: CatCountRequest = {}): Promise<CatCountResponse> {
+        return this.request.send(`/_cat/count/${target}?${toQueryString(queryParams)}`)
+    }
 }
 
 export interface CommonCatQueryParameters {
@@ -75,3 +79,20 @@ export interface CatAlias {
 }
 
 export type CatAliasesResponse = CatAlias[]
+
+export interface CatCountRequestQueryParams extends CommonCatQueryParameters {
+
+}
+
+export interface CatCountRequest {
+    target?: string
+    queryParams?: CatCountRequestQueryParams
+}
+
+export interface CatCount {
+    epoch: string
+    timestamp: string
+    count: string
+}
+
+export type CatCountResponse = CatCount[]

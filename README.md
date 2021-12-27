@@ -11,7 +11,7 @@
 ### Connect
 
 ```ts
-import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
+import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v7.16.2/mod.ts'
 
 const client = new ElasticsearchClient({
     node: 'http://localhost:9200',
@@ -29,7 +29,7 @@ const client = new ElasticsearchClient({
 ### Search APIs
 
 ```ts
-import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
+import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.2/mod.ts'
 
 interface Source {
     title: string
@@ -57,7 +57,7 @@ const mres: MSearchResponse<Source> = await client.msearch<{ title: string }>({
 })
 
 // msearch will not throw an error on not found like search does
-// so you have to check if each response has object 'hits' or 'error'
+// so you have to check if each response has object `hits` or `error`
 mres.responses.forEach((m) => {
     if ('hits' in m) {
         console.log(m.status)
@@ -72,9 +72,10 @@ mres.responses.forEach((m) => {
 ### Cluster APIs
 
 ```ts
-import type { ClusterHealthResponse } from 'https://deno.land/x/elasticsearch@v7.16.1/mod.ts'
-
-const health: ClusterHealthResponse = await client.cluster.health()
+const health = await client.cluster.health({
+    target: '',
+    queryParams: {}
+})
 ```
 
 <br>
@@ -89,6 +90,11 @@ const indices = await client.cat.indices({
 
 const aliases = await client.cat.aliases({
     alias: '*',
+    queryParams: {}
+})
+
+const count = await client.cat.count({
+    target: '*',
     queryParams: {}
 })
 ```
