@@ -97,6 +97,16 @@ const count = await client.cat.count({
     target: '*',
     queryParams: {}
 })
+
+const allocation = await client.cat.allocation({
+    nodeId: '*',
+    queryParams: {}
+})
+
+const fielddata = await client.cat.fielddata({
+    field: '*',
+    queryParams: {}
+})
 ```
 
 <br>
