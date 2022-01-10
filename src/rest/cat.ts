@@ -20,6 +20,14 @@ export default class Cat extends Rest {
     count({ target = '*', queryParams = { format: 'json', pretty: true } }: CatCountRequest = {}): Promise<CatCountResponse> {
         return this.request.send(`/_cat/count/${target}?${toQueryString(queryParams)}`)
     }
+
+    allocation({ nodeId = '*', queryParams = { format: 'json', pretty: true } }: CatAllocationRequest = {}): Promise<CatAllocationResponse> {
+        return this.request.send(`/_cat/allocation/${nodeId}?${toQueryString(queryParams)}`)
+    }
+
+    fielddata({ field = '*', queryParams = { format: 'json', pretty: true } }: CatFielddataRequest = {}): Promise<CatFielddataResponse> {
+        return this.request.send(`/_cat/fielddata/${field}?${toQueryString(queryParams)}`)
+    }
 }
 
 export interface CommonCatQueryParameters extends CommonQueryParameters {
@@ -78,14 +86,9 @@ export interface CatAlias {
 }
 
 export type CatAliasesResponse = CatAlias[]
-
-export interface CatCountRequestQueryParams extends CommonCatQueryParameters {
-
-}
-
 export interface CatCountRequest {
     target?: string
-    queryParams?: CatCountRequestQueryParams
+    queryParams?: CommonCatQueryParameters
 }
 
 export interface CatCount {
@@ -95,3 +98,47 @@ export interface CatCount {
 }
 
 export type CatCountResponse = CatCount[]
+
+
+export interface CatAllocationRequestQueryParams extends CommonCatQueryParameters {
+    bytes?: Bytes
+}
+
+export interface CatAllocationRequest {
+    nodeId?: string
+    queryParams?: CatAllocationRequestQueryParams
+}
+
+export interface CatAllocation {
+    shards: string
+    'disk.indices': string
+    'disk.used': string
+    'disk.avail': string
+    'disk.total': string
+    'disk.percent': string
+    host: string
+    ip: string
+    node: string
+}
+
+export type CatAllocationResponse = CatAllocation[]
+
+export interface CatFielddataRequestQueryParams extends Omit<CommonCatQueryParameters, 'master_timeout'> {
+    bytes?: Bytes
+}
+
+export interface CatFielddataRequest {
+    field?: string
+    queryParams?: CatFielddataRequestQueryParams
+}
+
+export interface CatFielddata {
+    id: string
+    host: string
+    ip: string
+    node: string
+    field: string
+    size: string
+}
+
+export type CatFielddataResponse = CatFielddata[]
