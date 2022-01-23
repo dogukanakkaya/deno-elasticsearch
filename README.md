@@ -11,7 +11,7 @@
 ### Connect
 
 ```ts
-import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v7.16.2/mod.ts'
+import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v7.16.4/mod.ts'
 
 const client = new ElasticsearchClient({
     node: 'http://localhost:9200',
@@ -29,7 +29,7 @@ const client = new ElasticsearchClient({
 ### Search APIs
 
 ```ts
-import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.2/mod.ts'
+import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.4/mod.ts'
 
 interface Source {
     title: string
@@ -64,6 +64,25 @@ mres.responses.forEach((m) => {
     } else if ('error' in m) {
         console.log(m.error.root_cause[0].reason)
     }
+})
+```
+
+<br>
+
+### SQL Search API
+
+```ts
+import type { SqlSearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.4/mod.ts'
+
+const res: SqlSearchResponse = await client.sql.search({
+    body: {
+        query: "SELECT * FROM test_index"
+    },
+    queryParams: {}
+})
+
+res.rows.forEach((row) => {
+    console.log(row)
 })
 ```
 
@@ -208,11 +227,11 @@ await client.documents.delete({
 await client.documents.bulk({
     // target: 'test-index',
     body: [
-        { index: { _index: 'test-index2', _id: '2', } },
+        { index: { _index: 'test-index', _id: '2', } },
         { title: 'Node is great' },
-        { index: { _index: 'test-index2', _id: '3', } },
+        { index: { _index: 'test-index', _id: '3', } },
         { title: 'Deno is also great' },
-        { update: { _id: '3', _index: "test-index2" } },
+        { update: { _id: '3', _index: "test-index" } },
         { doc: { title: 'Deno is much better than node' } }
     ],
     queryParams: {}
@@ -224,3 +243,8 @@ const exists = await client.documents.exists({
     queryParams: {}
 })
 ```
+
+
+## Todo
+
+- [] Write tests
