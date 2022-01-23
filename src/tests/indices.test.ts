@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.122.0/testing/asserts.ts"
+import { assertEquals } from './deps.ts'
 import { Client as ElasticsearchClient } from '../../mod.ts'
 
 const client = new ElasticsearchClient({
