@@ -255,6 +255,5 @@ const exists = await client.documents.exists({
 
 - [ ] Write all tests for each REST endpoint.
 - [ ] Add async search for Document APIs.
-- [ ] Add async search for SQL APIs.
 - [ ] Add other cat and cluster endpoints.
 - [ ] Separate the search operations from client class.
