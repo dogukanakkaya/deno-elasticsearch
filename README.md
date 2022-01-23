@@ -11,7 +11,7 @@
 ### Connect
 
 ```ts
-import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v7.16.4/mod.ts'
+import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v7.16.5/mod.ts'
 
 const client = new ElasticsearchClient({
     node: 'http://localhost:9200',
@@ -29,7 +29,7 @@ const client = new ElasticsearchClient({
 ### Search APIs
 
 ```ts
-import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.4/mod.ts'
+import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.5/mod.ts'
 
 interface Source {
     title: string
@@ -72,7 +72,7 @@ mres.responses.forEach((m) => {
 ### SQL Search API
 
 ```ts
-import type { SqlSearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.4/mod.ts'
+import type { SqlSearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.5/mod.ts'
 
 const res: SqlSearchResponse = await client.sql.search({
     body: {
@@ -83,6 +83,11 @@ const res: SqlSearchResponse = await client.sql.search({
 
 res.rows.forEach((row) => {
     console.log(row)
+})
+
+const resAsync = await client.sql.getAsyncSearch({
+    searchId: 'FjdMX1JpMUFOVGVpOHJfUmJtcXdnLXcbZjBQdkR2bUNTUkNRdmR2Z0NJSWdIQToxMzgx',
+    queryParams: {}
 })
 ```
 

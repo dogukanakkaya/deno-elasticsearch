@@ -12,6 +12,10 @@ export default class Sql extends Rest {
             body: JSON.stringify(body)
         })
     }
+
+    getAsyncSearch({ searchId, queryParams }: SqlGetAsyncSearchRequest): Promise<SqlSearchResponse> {
+        return this.request.send(`/_sql/async/${searchId}?${toQueryString(queryParams)}`)
+    }
 }
 
 export type SqlSearchResponseFormats = 'csv' | 'json' | 'tsv' | 'txt' | 'yaml' | 'cbor' | 'smile'
@@ -36,7 +40,7 @@ export interface SqlSearchRequestBody {
     cursor?: string
     fetch_size?: number
     field_multi_value_leniency?: boolean
-
+    filter?: unknown
     index_include_frozen?: string
     keep_alive?: Time
     keep_on_completion?: boolean
@@ -63,4 +67,17 @@ export interface SqlSearchResponse {
     columns: SqlSearchResponseColumns[]
     rows: unknown[][]
     cursor: string
+    id?: string
+    is_partial?: boolean
+    is_running?: boolean
+}
+
+export interface SqlGetAsyncSearchRequestQueryParams extends SqlSearchRequestQueryParams {
+    keep_alive?: Time
+    wait_for_completion_timeout?: Time
+}
+
+export interface SqlGetAsyncSearchRequest {
+    searchId: string
+    queryParams?: SqlGetAsyncSearchRequestQueryParams
 }
