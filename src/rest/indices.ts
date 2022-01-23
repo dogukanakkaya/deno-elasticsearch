@@ -43,7 +43,7 @@ export default class Indices extends Rest {
         })
     }
 
-    settings({ target, setting, queryParams }: IndicesSettingsGetRequest): Promise<IndicesSettingsGetResponse> {
+    settings({ target, setting = '', queryParams }: IndicesSettingsGetRequest): Promise<IndicesSettingsGetResponse> {
         return this.request.send(`/${target}/_settings/${setting}?${toQueryString(queryParams)}`)
     }
 }
