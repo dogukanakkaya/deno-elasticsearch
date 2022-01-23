@@ -3,6 +3,7 @@ import Cluster from './rest/cluster.ts'
 import Cat from './rest/cat.ts'
 import Indices from './rest/indices.ts'
 import Documents from './rest/documents.ts'
+import Sql from './rest/sql.ts'
 import { Request, toQueryString, ndserialize } from './helpers/mod.ts'
 
 import type { Time, ErrorResponseBase } from './types.d.ts'
@@ -14,6 +15,7 @@ export default class Client {
     readonly cat: Cat
     readonly indices: Indices
     readonly documents: Documents
+    readonly sql: Sql
 
     constructor(options: ClientOptions) {
         this.#options = options
@@ -26,6 +28,7 @@ export default class Client {
         this.cat = new Cat(this.#request)
         this.indices = new Indices(this.#request)
         this.documents = new Documents(this.#request)
+        this.sql = new Sql(this.#request)
     }
 
     #createHeaders(): Headers {
