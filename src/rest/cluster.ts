@@ -6,7 +6,7 @@ import type {
     Health,
     WaitForActiveShards,
     WaitForEvents
-} from './types.d.ts'
+} from '../types.d.ts'
 
 export default class Cluster extends Rest {
     health({ target = '', queryParams = {} }: ClusterHealthRequest = {}): Promise<ClusterHealthResponse> {

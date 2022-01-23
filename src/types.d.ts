@@ -36,8 +36,8 @@ export interface CommonQueryParameters {
     format?: string
 }
 
-export * from './cluster.ts'
-export * from './cat.ts'
-export * from './indices.ts'
-export * from './documents.ts'
+export * from './rest/cluster.ts'
+export * from './rest/cat.ts'
+export * from './rest/indices.ts'
+export * from './rest/documents.ts'
 export * from './client.ts'

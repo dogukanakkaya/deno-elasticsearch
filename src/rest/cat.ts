@@ -6,7 +6,7 @@ import type {
     Health,
     Bytes,
     Time
-} from './types.d.ts'
+} from '../types.d.ts'
 
 export default class Cat extends Rest {
     indices({ target = '*', queryParams = { format: 'json', pretty: true } }: CatIndicesRequest = {}): Promise<CatIndicesResponse> {

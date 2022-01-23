@@ -1,9 +1,9 @@
-import { encode } from '../../deps.ts'
-import Cluster from './cluster.ts'
-import Cat from './cat.ts'
-import Indices from './indices.ts'
-import Documents from './documents.ts'
-import { Request, toQueryString, ndserialize } from '../helpers/mod.ts'
+import { encode } from '../deps.ts'
+import Cluster from './rest/cluster.ts'
+import Cat from './rest/cat.ts'
+import Indices from './rest/indices.ts'
+import Documents from './rest/documents.ts'
+import { Request, toQueryString, ndserialize } from './helpers/mod.ts'
 
 import type { Time, ErrorResponseBase } from './types.d.ts'
 

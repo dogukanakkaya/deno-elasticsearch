@@ -5,7 +5,7 @@ import type {
     Time,
     CommonQueryParameters,
     WaitForActiveShards
-} from './types.d.ts'
+} from '../types.d.ts'
 
 export default class Indices extends Rest {
     get({ target, queryParams }: IndicesGetRequest): Promise<IndicesGetResponse> {

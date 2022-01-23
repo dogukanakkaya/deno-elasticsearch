@@ -8,7 +8,7 @@ import type {
     WaitForActiveShards,
     Refresh,
     CommonQueryParameters
-} from './types.d.ts'
+} from '../types.d.ts'
 
 export default class Documents extends Rest {
     get<T>({ index, _id, queryParams }: DocumentsGetRequest): Promise<DocumentsGetResponse<T>> {
