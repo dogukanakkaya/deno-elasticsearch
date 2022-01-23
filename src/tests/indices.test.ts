@@ -1,15 +1,10 @@
-import { assertEquals } from './deps.ts'
-import { Client as ElasticsearchClient } from '../../mod.ts'
+import { client, ELASTIC_TEST_INDEX, assertEquals } from './deps.ts'
 
-const client = new ElasticsearchClient({
-    node: 'http://localhost:9201'
-})
-
-Deno.test("index apis", async (t) => {
-    const index = 'my-test-index'
+Deno.test('index apis', async (t) => {
+    const index = ELASTIC_TEST_INDEX
 
     await t.step({
-        name: 'create indice > PUT /my-test-index',
+        name: `PUT /${index}`,
         fn: async () => {
             const indice = await client.indices.create({ index })
 
@@ -19,7 +14,7 @@ Deno.test("index apis", async (t) => {
     })
 
     await t.step({
-        name: 're-create indice > PUT /my-test-index',
+        name: `PUT /${index}`,
         fn: async () => {
             try {
                 await client.indices.create({ index })
@@ -32,7 +27,7 @@ Deno.test("index apis", async (t) => {
     })
 
     await t.step({
-        name: 'get indice > GET /my-test-index',
+        name: `GET /${index}`,
         fn: async () => {
             const indice = await client.indices.get({ target: index })
 
@@ -41,7 +36,7 @@ Deno.test("index apis", async (t) => {
     })
 
     await t.step({
-        name: 'indice exists > HEAD /my-test-index',
+        name: `HEAD /${index}`,
         fn: async () => {
             const exists = await client.indices.exists({ target: index })
 
@@ -50,7 +45,7 @@ Deno.test("index apis", async (t) => {
     })
 
     await t.step({
-        name: 'close indice > POST /my-test-index',
+        name: `POST /${index}/_close`,
         fn: async () => {
             const indice = await client.indices.close({ index })
 
@@ -59,7 +54,7 @@ Deno.test("index apis", async (t) => {
     })
 
     await t.step({
-        name: 'open indice > POST /my-test-index',
+        name: `POST /${index}/_open`,
         fn: async () => {
             const indice = await client.indices.open({ target: index })
 
@@ -68,7 +63,7 @@ Deno.test("index apis", async (t) => {
     })
 
     await t.step({
-        name: 'indice settings > GET /my-test-index',
+        name: `GET /${index}/_settings`,
         fn: async () => {
             const indice = await client.indices.settings({ target: index })
 
@@ -77,7 +72,7 @@ Deno.test("index apis", async (t) => {
     })
 
     await t.step({
-        name: 'delete indice > DELETE /my-test-index',
+        name: `DELETE /${index}`,
         fn: async () => {
             const indice = await client.indices.delete({ index })
 
@@ -86,7 +81,7 @@ Deno.test("index apis", async (t) => {
     })
 
     await t.step({
-        name: 'indice not exists > HEAD /my-test-index',
+        name: `HEAD /${index}`,
         fn: async () => {
             const exists = await client.indices.exists({ target: index })
 
@@ -95,7 +90,7 @@ Deno.test("index apis", async (t) => {
     })
 
     await t.step({
-        name: 're-delete indice > DELETE /my-test-index',
+        name: `DELETE /${index}`,
         fn: async () => {
             try {
                 await client.indices.delete({ index })
