@@ -13,21 +13,27 @@ export class Request {
         return fetch(endpoint, {
             ...this.#init,
             ...init
-        }).then(async (res) => {
+        }).then(async res => {
             const contentType = res.headers.get('content-type')
 
-            if (contentType && contentType.indexOf('application/json') !== -1) {
-                if (res.status >= 200 && res.status < 300) {
-                    return res.json()
+            if (contentType?.indexOf('application/json') !== -1) {
+                try {
+                    if (res.status >= 200 && res.status < 300) {
+                        return await res.json()
+                    }
+                } catch (_) {
+                    // if content-type is json but the response data is not json
+                    // just return if the response is ok or not
+                    return res.ok
                 }
 
-                throw JSON.stringify(await res.json())
+                throw await res.json()
             } else {
                 if (res.ok) {
-                    return true
+                    return await res.text()
                 }
 
-                throw res.statusText
+                throw await res.text()
             }
         })
     }
