@@ -6,4 +6,5 @@
 # Local Development
 app.ts
 .env
+*.crt
 #/ Local Development

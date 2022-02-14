@@ -1,4 +1,4 @@
-import { encode } from '../deps.ts'
+import { encode as base64Encode } from '../deps.ts'
 import Cluster from './rest/cluster.ts'
 import Cat from './rest/cat.ts'
 import Indices from './rest/indices.ts'
@@ -39,7 +39,7 @@ export default class Client {
         if (this.#options.auth) {
             const { username, password } = this.#options.auth
 
-            headers.append('Authorization', `Basic ${encode(`${username}:${password}`)}`)
+            headers.append('Authorization', `Basic ${base64Encode(`${username}:${password}`)}`)
         }
 
         return headers

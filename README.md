@@ -11,7 +11,7 @@
 ### Connect
 
 ```ts
-import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v7.16.5/mod.ts'
+import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v8.0.0/mod.ts'
 
 const client = new ElasticsearchClient({
     node: 'http://localhost:9200',
@@ -29,7 +29,7 @@ const client = new ElasticsearchClient({
 ### Search APIs
 
 ```ts
-import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.5/mod.ts'
+import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v8.0.0/mod.ts'
 
 interface Source {
     title: string
@@ -72,7 +72,7 @@ mres.responses.forEach((m) => {
 ### SQL Search API
 
 ```ts
-import type { SqlSearchResponse } from 'https://deno.land/x/elasticsearch@v7.16.5/mod.ts'
+import type { SqlSearchResponse } from 'https://deno.land/x/elasticsearch@v8.0.0/mod.ts'
 
 const res: SqlSearchResponse = await client.sql.search({
     body: {
@@ -251,9 +251,27 @@ const exists = await client.documents.exists({
 
 <br>
 
+## Docker
+
+Start an Elasticsearch 8 Container
+```
+docker run -p 9201:9200 --name deno-elasticsearch -e "discovery.type=single-node" -d -it docker.elastic.co/elasticsearch/elasticsearch:8.0.0
+```
+
+Copy the Security Certificate from Docker Container to Your Local Machine
+```
+docker cp elasticsearch:/usr/share/elasticsearch/config/certs/http_ca.crt .
+```
+
+Run Application with Certificate (remember to connect client with auth object)
+```
+deno run --allow-net --cert http_ca.crt app.ts
+```
+
+
+<br>
+
 ## Todo
 
 - [ ] Write all tests for each REST endpoint.
-- [ ] Add async search for Document APIs.
 - [ ] Add other cat and cluster endpoints.
-- [ ] Separate the search operations from client class.
