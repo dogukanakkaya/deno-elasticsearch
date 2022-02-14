@@ -271,7 +271,15 @@ deno run --allow-net --cert http_ca.crt app.ts
 
 <br>
 
+## Tests
+```
+deno test tests --allow-net --cert http_ca.crt
+```
+
+<br>
+
 ## Todo
 
 - [ ] Write all tests for each REST endpoint.
 - [ ] Add other cat and cluster endpoints.
+- [ ] Add "GET /target/_count" for index apis
