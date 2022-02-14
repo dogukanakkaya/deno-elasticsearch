@@ -9,7 +9,7 @@ const client = new ElasticsearchClient({
     node: 'https://localhost:9201',
     auth: {
         username: 'elastic',
-        password: 'w42us_g85YbLE8zwo=4E'
+        password: 'password'
     }
 })
 
