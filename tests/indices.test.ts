@@ -1,4 +1,4 @@
-import { client, ELASTIC_TEST_INDEX, assertEquals } from './deps.ts'
+import { client, ELASTIC_TEST_INDEX, assertEquals, assert } from './deps.ts'
 
 Deno.test('index apis', async (t) => {
     const index = ELASTIC_TEST_INDEX
@@ -19,7 +19,7 @@ Deno.test('index apis', async (t) => {
             try {
                 await client.indices.create({ index })
 
-                assertEquals(true, false)
+                assert(false, 'can\'t re-create an existing index')
             } catch (err) {
                 assertEquals(err.status, 400)
             }
@@ -95,7 +95,7 @@ Deno.test('index apis', async (t) => {
             try {
                 await client.indices.delete({ index })
 
-                assertEquals(true, false)
+                assert(false, 'can\'t delete an index that is already deleted')
             } catch (err) {
                 assertEquals(err.status, 404)
             }
