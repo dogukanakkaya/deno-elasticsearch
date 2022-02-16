@@ -19,6 +19,13 @@ export default class Indices extends Rest {
         })
     }
 
+    clone({ index, targetIndex, body, queryParams }: IndicesCreateRequest & { targetIndex: string }): Promise<IndicesCreateResponse> {
+        return this.request.send(`/${index}/_clone/${targetIndex}?${toQueryString(queryParams)}`, {
+            method: 'POST',
+            body: JSON.stringify(body)
+        })
+    }
+
     delete({ index, queryParams }: IndicesDeleteRequest): Promise<IndicesDeleteResponse> {
         return this.request.send(`/${index}?${toQueryString(queryParams)}`, {
             method: 'DELETE'
@@ -46,11 +53,18 @@ export default class Indices extends Rest {
     settings({ target, setting = '', queryParams }: IndicesSettingsGetRequest): Promise<IndicesSettingsGetResponse> {
         return this.request.send(`/${target}/_settings/${setting}?${toQueryString(queryParams)}`)
     }
+
+    updateSettings({ target, body, queryParams }: IndicesUpdateSettingsRequest): Promise<IndicesUpdateSettingsResponse> {
+        return this.request.send(`/${target}/_settings/?${toQueryString(queryParams)}`, {
+            method: 'PUT',
+            body: JSON.stringify(body)
+        })
+    }
 }
 
 export interface IndiceIndexState {
     mappings?: unknown
-    settings?: Record<string, any>
+    settings?: StaticSettings & DynamicSettings
     aliases?: Record<string, IndiceAlias>
     data_stream?: string
 }
@@ -85,7 +99,7 @@ export interface IndicesGetResponse {
 
 export interface IndicesCreateRequestBody {
     mappings?: unknown
-    settings?: Record<string, any>
+    settings?: StaticSettings
     aliases?: Record<string, IndiceAlias>
 }
 
@@ -191,4 +205,75 @@ export interface IndicesSettingsGetRequest {
 
 export interface IndicesSettingsGetResponse {
     [key: string]: IndiceIndexState
+}
+
+export interface IndicesUpdateSettingsRequestBody {
+    mappings?: unknown
+    settings?: DynamicSettings
+    aliases?: Record<string, IndiceAlias>
+}
+
+export interface IndicesUpdateSettingsRequestQueryParams extends CommonQueryParameters {
+    wait_for_active_shards?: WaitForActiveShards
+    master_timeout?: Time
+    timeout?: Time
+}
+
+export interface IndicesUpdateSettingsRequest {
+    target: string
+    body?: IndicesUpdateSettingsRequestBody
+    queryParams?: IndicesUpdateSettingsRequestQueryParams
+}
+
+export interface IndicesUpdateSettingsResponse {
+    acknowledged: boolean
+}
+
+export interface StaticSettings {
+    index: {
+        number_of_shards?: number
+        number_of_routing_shards?: number
+        codec?: string
+        routing_partition_size?: number
+        'soft_deletes.retention_lease.period'?: string
+        load_fixed_bitset_filters_eagerly?: boolean
+        'shard.check_on_startup'?: boolean | 'checksum'
+    }
+}
+
+export interface DynamicSettings {
+    index: {
+        blocks?: IndexBlocks
+        number_of_replicas?: number
+        auto_expand_replicas?: string | boolean
+        'search.idle.after'?: Time
+        refresh_interval?: Time
+        max_result_window?: number
+        max_inner_result_window?: number
+        max_rescore_window?: number
+        max_docvalue_fields_search?: number
+        max_script_fields?: number
+        max_ngram_diff?: number
+        max_shingle_diff?: number
+        max_refresh_listeners?: number
+        'analyze.max_token_count'?: number
+        'highlight.max_analyzed_offset'?: number
+        max_terms_count?: number
+        max_regex_length?: number
+        'query.default_field'?: string
+        'routing.allocation.enable'?: 'all' | 'primaries' | 'new_primaries' | 'none'
+        'routing.rebalance.enable'?: 'all' | 'primaries' | 'replicas' | 'none'
+        gc_deletes?: Time
+        default_pipeline?: string
+        final_pipeline?: string
+        hidden?: boolean
+    }
+}
+
+export interface IndexBlocks {
+    read_only?: boolean
+    read_only_allow_delete?: boolean;
+    read?: boolean;
+    write?: boolean;
+    metadata?: boolean;
 }

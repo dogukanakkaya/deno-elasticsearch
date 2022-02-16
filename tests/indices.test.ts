@@ -12,6 +12,50 @@ Deno.test('index apis', async (t) => {
     })
 
     await t.step({
+        name: `PUT /${ELASTIC_TEST_INDEX}/_clone/cloned-${ELASTIC_TEST_INDEX} fails without read-only`,
+        fn: async () => {
+            try {
+                await client.indices.clone({ index: ELASTIC_TEST_INDEX, targetIndex: `cloned-${ELASTIC_TEST_INDEX}` })
+
+                assert(false, 'can\'t clone an index that is not read-only')
+            } catch (err) {
+                assertEquals(err.status, 500)
+                assertEquals(err.error.type, 'illegal_state_exception')
+            }
+        }
+    })
+
+    await t.step({
+        name: `PUT /${ELASTIC_TEST_INDEX}/_settings`,
+        fn: async () => {
+            const indice = await client.indices.updateSettings({
+                target: ELASTIC_TEST_INDEX,
+                body: {
+                    settings: {
+                        index: {
+                            blocks: {
+                                write: true
+                            }
+                        }
+                    }
+                }
+            })
+
+            assert(indice.acknowledged)
+        }
+    })
+
+    await t.step({
+        name: `PUT /${ELASTIC_TEST_INDEX}/_clone/cloned-${ELASTIC_TEST_INDEX}`,
+        fn: async () => {
+            const indice = await client.indices.clone({ index: ELASTIC_TEST_INDEX, targetIndex: `cloned-${ELASTIC_TEST_INDEX}` })
+
+            assert(indice.acknowledged)
+            assertEquals(indice.index, `cloned-${ELASTIC_TEST_INDEX}`)
+        }
+    })
+
+    await t.step({
         name: `PUT /${ELASTIC_TEST_INDEX}`,
         fn: async () => {
             try {
@@ -75,6 +119,9 @@ Deno.test('index apis', async (t) => {
             const indice = await client.indices.delete({ index: ELASTIC_TEST_INDEX })
 
             assert(indice.acknowledged)
+
+            // delete index that is used for testing clone endpoint
+            await client.indices.delete({ index: `cloned-${ELASTIC_TEST_INDEX}` })
         }
     })
 
