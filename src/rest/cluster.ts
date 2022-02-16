@@ -63,7 +63,7 @@ export interface ClusterSettingsRequestQueryParams {
 }
 
 export interface ClusterSettingsRequest {
-    queryParams?: ClusterHealthRequestQueryParams
+    queryParams?: ClusterSettingsRequestQueryParams
 }
 
 export interface ClusterSettingsResponse {
