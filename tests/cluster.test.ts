@@ -1,4 +1,4 @@
-import { client, assertEquals } from './deps.ts'
+import { client, assertEquals, assert } from './deps.ts'
 
 Deno.test("cluster apis", async (t) => {
     await t.step({
@@ -6,7 +6,16 @@ Deno.test("cluster apis", async (t) => {
         fn: async () => {
             const health = await client.cluster.health()
 
-            assertEquals(Object.hasOwn(health, 'status'), true)
+            assert(Object.hasOwn(health, 'status'))
+        }
+    })
+
+    await t.step({
+        name: 'GET /_cluster/settings',
+        fn: async () => {
+            const settings = await client.cluster.settings()
+
+            assert(Object.hasOwn(settings, 'persistent'));
         }
     })
 })

@@ -3,6 +3,7 @@ import { toQueryString } from '../helpers/mod.ts'
 
 import type {
     Time,
+    Bytes,
     Health,
     WaitForActiveShards,
     WaitForEvents
@@ -11,6 +12,10 @@ import type {
 export default class Cluster extends Rest {
     health({ target = '', queryParams = {} }: ClusterHealthRequest = {}): Promise<ClusterHealthResponse> {
         return this.request.send(`/_cluster/health/${target}?${toQueryString(queryParams)}`)
+    }
+
+    settings({ queryParams = {} }: ClusterSettingsRequest = {}): Promise<ClusterSettingsResponse> {
+        return this.request.send(`/_cluster/settings/?${toQueryString(queryParams)}`)
     }
 }
 
@@ -48,4 +53,20 @@ export interface ClusterHealthResponse {
     number_of_in_flight_fetch: number
     task_max_waiting_in_queue_millis: number
     active_shards_percent_as_number: number
+}
+
+export interface ClusterSettingsRequestQueryParams {
+    flat_settings?: boolean
+    include_defaults?: boolean
+    master_timeout?: Time
+    timeout?: Time
+}
+
+export interface ClusterSettingsRequest {
+    queryParams?: ClusterHealthRequestQueryParams
+}
+
+export interface ClusterSettingsResponse {
+    persistent?: Record<string, unknown>
+    transient?: Record<string, unknown>
 }

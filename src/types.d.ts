@@ -1,6 +1,6 @@
 export type Time = string
 
-export type Bytes = 'b' | 'kb' | 'mb' | 'gb' | 'tb' | 'pb'
+export type Bytes = string
 
 export type WaitForActiveShards = number | 'all'
 
