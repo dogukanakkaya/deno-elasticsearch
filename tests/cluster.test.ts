@@ -1,4 +1,4 @@
-import { client, assertEquals, assert } from './deps.ts'
+import { client, assert } from './deps.ts'
 
 Deno.test("cluster apis", async (t) => {
     await t.step({
