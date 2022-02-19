@@ -17,7 +17,7 @@ export type Refresh<T = void> = boolean | T
 export interface ShardFailure {
     index?: string
     node?: string
-    reason: any
+    reason: string
     shard: number
     status?: string
 }
