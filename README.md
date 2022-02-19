@@ -11,7 +11,7 @@
 ### Connect
 
 ```ts
-import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v8.0.0/mod.ts'
+import { Client as ElasticsearchClient } from 'https://deno.land/x/elasticsearch@v8.0.1/mod.ts'
 
 const client = new ElasticsearchClient({
     node: 'http://localhost:9200',
@@ -29,7 +29,7 @@ const client = new ElasticsearchClient({
 ### Search APIs
 
 ```ts
-import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v8.0.0/mod.ts'
+import type { SearchResponse } from 'https://deno.land/x/elasticsearch@v8.0.1/mod.ts'
 
 interface Source {
     title: string
@@ -72,7 +72,7 @@ mres.responses.forEach((m) => {
 ### SQL Search API
 
 ```ts
-import type { SqlSearchResponse } from 'https://deno.land/x/elasticsearch@v8.0.0/mod.ts'
+import type { SqlSearchResponse } from 'https://deno.land/x/elasticsearch@v8.0.1/mod.ts'
 
 const res: SqlSearchResponse = await client.sql.search({
     body: {
@@ -179,6 +179,8 @@ const settings = await client.indices.settings({
     setting: '',
     queryParams: {}
 })
+
+await client.indices.refresh({ target: 'test-index' })
 ```
 
 <br>
@@ -247,6 +249,15 @@ const exists = await client.documents.exists({
     _id: '1',
     queryParams: {}
 })
+```
+
+<br>
+
+### Notes
+
+If you get a promise to an error responses, wrap your code within try catch:
+```
+error: Uncaught (in promise) #<Object>
 ```
 
 <br>
