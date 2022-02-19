@@ -6,7 +6,11 @@ import Documents from './rest/documents.ts'
 import Sql from './rest/sql.ts'
 import { Request, toQueryString, ndserialize } from './helpers/mod.ts'
 
-import type { Time, ErrorResponseBase } from './types.d.ts'
+import type {
+    Time,
+    ErrorResponseBase,
+    ShardStatistics
+} from './types.d.ts'
 
 export default class Client {
     readonly #options: ClientOptions
@@ -70,22 +74,6 @@ export interface SearchHit<T> {
     _id: string
     _score: number
     _source: T
-}
-
-export interface ShardFailure {
-    index?: string
-    node?: string
-    reason: any
-    shard: number
-    status?: string
-}
-
-export interface ShardStatistics {
-    total: number
-    successful: number
-    failed: number
-    skipped?: number
-    failures?: ShardFailure[]
 }
 
 export interface Explanation {

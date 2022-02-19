@@ -4,7 +4,9 @@ import { toQueryString } from '../helpers/mod.ts'
 import type {
     Time,
     CommonQueryParameters,
-    WaitForActiveShards
+    WaitForActiveShards,
+    ExpandWildcards,
+    ShardStatistics
 } from '../types.d.ts'
 
 export default class Indices extends Rest {
@@ -58,6 +60,12 @@ export default class Indices extends Rest {
         return this.request.send(`/${target}/_settings/?${toQueryString(queryParams)}`, {
             method: 'PUT',
             body: JSON.stringify(body)
+        })
+    }
+
+    refresh({ target = '*', queryParams }: IndicesRefreshRequest): Promise<IndicesRefreshResponse> {
+        return this.request.send(`/${target}/_refresh?${toQueryString(queryParams)}`, {
+            method: 'POST'
         })
     }
 }
@@ -227,6 +235,21 @@ export interface IndicesUpdateSettingsRequest {
 
 export interface IndicesUpdateSettingsResponse {
     acknowledged: boolean
+}
+
+export interface IndicesRefreshRequestQueryParams extends CommonQueryParameters {
+    allow_no_indices?: boolean
+    expand_wildcards?: ExpandWildcards
+    ignore_unavailable?: boolean
+}
+
+export interface IndicesRefreshRequest {
+    target: string
+    queryParams?: IndicesRefreshRequestQueryParams
+}
+
+export interface IndicesRefreshResponse {
+    _shards: ShardStatistics
 }
 
 export interface StaticSettings {

@@ -78,6 +78,15 @@ Deno.test('index apis', async (t) => {
     })
 
     await t.step({
+        name: `POST /${ELASTIC_TEST_INDEX}/_refresh`,
+        fn: async () => {
+            const indice = await client.indices.refresh({ target: ELASTIC_TEST_INDEX })
+
+            assertEquals(indice._shards.successful, 1)
+        }
+    })
+
+    await t.step({
         name: `HEAD /${ELASTIC_TEST_INDEX}`,
         fn: async () => {
             const exists = await client.indices.exists({ target: ELASTIC_TEST_INDEX })

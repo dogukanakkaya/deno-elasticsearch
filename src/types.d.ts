@@ -10,7 +10,25 @@ export type VersionType = 'external' | 'external_gte'
 
 export type Health = 'green' | 'yellow' | 'red'
 
+export type ExpandWildcards = 'all' | 'open' | 'closed' | 'hidden' | 'none'
+
 export type Refresh<T = void> = boolean | T
+
+export interface ShardFailure {
+    index?: string
+    node?: string
+    reason: any
+    shard: number
+    status?: string
+}
+
+export interface ShardStatistics {
+    total: number
+    successful: number
+    failed: number
+    skipped?: number
+    failures?: ShardFailure[]
+}
 
 export interface ErrorCause {
     type: string

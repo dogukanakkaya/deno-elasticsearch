@@ -87,7 +87,7 @@ Deno.test("cat apis", async (t) => {
             body: { title: 'Deno' }
         })
 
-        // wait for /_cat/count to increase (it does not immediately increases)
+        // wait for /_cat/count to increase (when a document is stored in Elasticsearch, it is indexed and fully searchable in near real-time--within 1 second.) 
         await delay(1000)
 
         await t.step({
