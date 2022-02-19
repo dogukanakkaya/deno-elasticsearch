@@ -100,6 +100,10 @@ const health = await client.cluster.health({
     target: '',
     queryParams: {}
 })
+
+const settings = await client.cluster.settings({
+    queryParams: {}
+})
 ```
 
 <br>
