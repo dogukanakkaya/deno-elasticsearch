@@ -184,9 +184,17 @@ const settings = await client.indices.settings({
     queryParams: {}
 })
 
-await client.indices.clone({ index: 'test-index', targetIndex: 'cloned-test-index' })
+await client.indices.clone({
+    index: 'test-index',
+    targetIndex: 'cloned-test-index',
+    body: {},
+    queryParams: {}
+})
 
-await client.indices.refresh({ target: 'test-index' })
+await client.indices.refresh({
+    target: 'test-index',
+    queryParams: {}
+})
 ```
 
 <br>
