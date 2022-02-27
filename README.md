@@ -280,7 +280,7 @@ error: Uncaught (in promise) #<Object>
 
 Start an Elasticsearch 8 Container
 ```
-docker run -p 9201:9200 --name deno-elasticsearch -e "discovery.type=single-node" -d -it docker.elastic.co/elasticsearch/elasticsearch:8.0.0
+docker run -p 9200:9200 --name deno-elasticsearch -e "discovery.type=single-node" -d -it docker.elastic.co/elasticsearch/elasticsearch:8.0.0
 ```
 
 Copy the Security Certificate from Docker Container to Your Local Machine
