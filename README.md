@@ -283,9 +283,14 @@ Start an Elasticsearch 8 Container
 docker run -p 9200:9200 --name deno-elasticsearch -e "discovery.type=single-node" -d -it docker.elastic.co/elasticsearch/elasticsearch:8.0.0
 ```
 
+Reset the password for `elastic` user
+```
+docker exec -it deno-elasticsearch /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+```
+
 Copy the Security Certificate from Docker Container to Your Local Machine
 ```
-docker cp elasticsearch:/usr/share/elasticsearch/config/certs/http_ca.crt .
+docker cp deno-elasticsearch:/usr/share/elasticsearch/config/certs/http_ca.crt .
 ```
 
 Run Application with Certificate (remember to connect client with auth object)
