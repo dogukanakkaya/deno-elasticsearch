@@ -1,4 +1,4 @@
-import { client, ELASTIC_TEST_INDEX, assertEquals, delay } from './deps.ts'
+import { client, ELASTIC_TEST_INDEX, assertEquals, assert, delay } from './deps.ts'
 
 Deno.test("search apis", async (t) => {
     // [test_dependency]
@@ -50,6 +50,32 @@ Deno.test("search apis", async (t) => {
 
             assertEquals(result.hits.total.value, 1)
             assertEquals(result.hits.hits[0]._source.popularity, 10.0)
+        }
+    })
+
+    await t.step({
+        name: `POST /${ELASTIC_TEST_INDEX}/_msearch`,
+        fn: async () => {
+            const result = await client.msearch<{ title: string, popularity: number }>({
+                body: [
+                    { index: ELASTIC_TEST_INDEX },
+                    { query: { match: { title: 'Deno' } } },
+                    { index: ELASTIC_TEST_INDEX },
+                    { query: { match: { title: 'Node' } } },
+                    { index: ELASTIC_TEST_INDEX },
+                    { query: { match: { title: 'Rust' } } },
+                ]
+            })
+
+            const existingResponses = result.responses.filter(res => {
+                return 'hits' in res && res.hits.total.value > 0
+            })
+
+            assertEquals(existingResponses.length, 2)
+
+            result.responses.forEach(data => {
+                assert(Object.hasOwn(data, 'hits'));
+            })
         }
     })
 
