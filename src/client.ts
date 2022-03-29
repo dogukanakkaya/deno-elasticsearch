@@ -139,7 +139,10 @@ export interface SearchResponse<T = unknown> {
     _scroll_id?: string
     _shards: ShardStatistics
     hits: {
-        total: number
+        total: {
+            value: number
+            relation: 'eq' | 'gte'
+        }
         max_score: number
         hits: SearchHit<T>[]
         _version?: number
