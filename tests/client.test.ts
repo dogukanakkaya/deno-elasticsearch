@@ -64,18 +64,16 @@ Deno.test("search apis", async (t) => {
                     { query: { match: { title: 'Node' } } },
                     { index: ELASTIC_TEST_INDEX },
                     { query: { match: { title: 'Rust' } } },
+                    { index: 'non-existent-index' },
+                    { query: { match: { title: 'V8' } } },
                 ]
             })
 
-            const existingResponses = result.responses.filter(res => {
-                return 'hits' in res && res.hits.total.value > 0
-            })
+            const existingResponses = result.responses.filter(res => 'hits' in res && res.hits.total.value > 0)
+            const errorResponses = result.responses.filter(res => 'error' in res)
 
             assertEquals(existingResponses.length, 2)
-
-            result.responses.forEach(data => {
-                assert(Object.hasOwn(data, 'hits'));
-            })
+            assertEquals(errorResponses.length, 1)
         }
     })
 
