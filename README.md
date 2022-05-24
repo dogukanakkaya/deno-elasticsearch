@@ -280,7 +280,7 @@ error: Uncaught (in promise) #<Object>
 
 Start an Elasticsearch 8 Container
 ```
-docker run -p 9200:9200 --name deno-elasticsearch -e "discovery.type=single-node" -d -it docker.elastic.co/elasticsearch/elasticsearch:8.0.0
+docker run -p 9200:9200 --name deno-elasticsearch -e "discovery.type=single-node" -d -it docker.elastic.co/elasticsearch/elasticsearch:8.2.0
 ```
 
 Reset the password for `elastic` user
@@ -302,6 +302,7 @@ deno run --allow-net --cert http_ca.crt app.ts
 <br>
 
 ## Tests
+> Don't forget to change password for elastic user in `tests/deps.ts`
 ```
 deno test tests --allow-net --cert http_ca.crt
 ```
