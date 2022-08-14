@@ -1,5 +1,5 @@
-export { assertEquals, assert } from 'https://deno.land/std@0.140.0/testing/asserts.ts'
-export { delay } from 'https://deno.land/std@0.140.0/async/delay.ts'
+export { assertEquals, assert } from 'https://deno.land/std@0.152.0/testing/asserts.ts'
+export { delay } from 'https://deno.land/std@0.152.0/async/delay.ts'
 import { Client as ElasticsearchClient } from '../mod.ts'
 
 export const ELASTIC_TEST_INDEX = 'my-test-index'
