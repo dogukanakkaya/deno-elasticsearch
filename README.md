@@ -1,7 +1,6 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/51231605/146690618-716a20dd-c3cd-4b30-a106-03108eb20cb0.png"/>
-
-<h3 align="center">Elasticsearch Client for Deno Runtime</p>
+  <h3 align="center">Elasticsearch Client for Deno Runtime</h3>
 </p>
 
 <br>
