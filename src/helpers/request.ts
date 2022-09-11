@@ -8,7 +8,7 @@ export class Request {
     }
 
     send<T>(url: string, init?: RequestInit): Promise<T> {
-        const endpoint = this.#baseUrl.endsWith('/') || url.startsWith('/') ? this.#baseUrl.concat(url) : this.#baseUrl.concat(`/${url}`)
+        const endpoint = this.#baseUrl.endsWith('/') || url.#baseUrl.startsWith('/') ? this.#baseUrl.concat(url) : this.#baseUrl.concat(`/${url}`)
 
         return fetch(endpoint, {
             ...this.#init,
