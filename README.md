@@ -18,6 +18,8 @@ const client = new ElasticsearchClient({
     auth: {
         username: 'elastic',
         password: 'password'
+        // or use apiKey
+        apiKey: 'apiKey'
     }
     */
 });
