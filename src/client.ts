@@ -41,9 +41,8 @@ export default class Client {
         headers.append('Content-Type', 'application/json')
 
         if (this.#options.auth) {
-            const { username, password } = this.#options.auth
-
-            headers.append('Authorization', `Basic ${base64Encode(`${username}:${password}`)}`)
+            const { username, password, apiKey } = this.#options.auth
+            headers.append('Authorization', apiKey ? `ApiKey ${apiKey}` : `Basic ${base64Encode(`${username}:${password}`)}`)
         }
 
         return headers
@@ -172,8 +171,9 @@ export interface MSearchResponse<T = unknown> {
 }
 
 interface ClientAuth {
-    username: string
-    password: string
+    username?: string
+    password?: string
+    apiKey?: string
 }
 
 interface ClientOptions {
