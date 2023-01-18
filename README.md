@@ -10,7 +10,7 @@
 ### Connect
 
 ```ts
-import { Client as ElasticsearchClient } from "https://deno.land/x/elasticsearch@v8.3.3/mod.ts";
+import { Client as ElasticsearchClient } from "https://deno.land/x/elasticsearch@v8.6.0/mod.ts";
 
 const client = new ElasticsearchClient({
   node: "http://localhost:9200",
@@ -28,7 +28,7 @@ const client = new ElasticsearchClient({
 ### Search APIs
 
 ```ts
-import type { SearchResponse } from "https://deno.land/x/elasticsearch@v8.3.3/mod.ts";
+import type { SearchResponse } from "https://deno.land/x/elasticsearch@v8.6.0/mod.ts";
 
 interface Source {
   title: string;
@@ -71,7 +71,7 @@ mres.responses.forEach((m) => {
 ### SQL Search API
 
 ```ts
-import type { SqlSearchResponse } from "https://deno.land/x/elasticsearch@v8.3.3/mod.ts";
+import type { SqlSearchResponse } from "https://deno.land/x/elasticsearch@v8.6.0/mod.ts";
 
 const res: SqlSearchResponse = await client.sql.search({
   body: {
@@ -282,7 +282,7 @@ error: Uncaught (in promise) #<Object>
 Start an Elasticsearch 8 Container
 
 ```
-docker run -p 9200:9200 --name deno-elasticsearch -e "discovery.type=single-node" -d -it docker.elastic.co/elasticsearch/elasticsearch:8.3.3
+docker run -p 9200:9200 --name deno-elasticsearch -e "discovery.type=single-node" -d -it docker.elastic.co/elasticsearch/elasticsearch:8.6.0
 ```
 
 Reset the password for `elastic` user
