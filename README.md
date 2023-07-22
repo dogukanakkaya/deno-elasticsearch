@@ -1,3 +1,5 @@
+:warning: Just use [official Elasticsearch package](https://github.com/elastic/elasticsearch-js) instead of this since Deno has support for npm packages via `npm:` specifier now.
+
 <p align="center">
   <img src="https://user-images.githubusercontent.com/51231605/146690618-716a20dd-c3cd-4b30-a106-03108eb20cb0.png"/>
   <h3 align="center">Elasticsearch Client for Deno Runtime</h3>
